@@ -1,0 +1,14 @@
+services:
+  database:
+    image: 'postgres:18'
+    environment:
+      POSTGRES_DB: database_csp
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: admin
+    ports:
+      - "5433:5432"
+    volumes:
+      - csp_data:/var/lib/postgresql
+
+volumes:
+  csp_data:
