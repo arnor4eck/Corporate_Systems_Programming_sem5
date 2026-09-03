@@ -11,8 +11,11 @@ public final class Application {
     }
 
     public void run() {
-        while (!shouldBeExit(menu.menu())) {
-            // TODO
+        while (true) {
+            int enteredNum = menu.menu();
+            if (shouldBeExit(enteredNum)) {
+                break;
+            }
         }
     }
 
