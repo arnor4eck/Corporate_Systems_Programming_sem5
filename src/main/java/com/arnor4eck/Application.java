@@ -6,8 +6,8 @@ public final class Application {
 
     private final MenuProvider menu;
 
-    public Application() {
-        this.menu = new MenuProvider(new Scanner(System.in));
+    public Application(Scanner scanner) {
+        this.menu = new MenuProvider(scanner);
     }
 
     public void run() {
