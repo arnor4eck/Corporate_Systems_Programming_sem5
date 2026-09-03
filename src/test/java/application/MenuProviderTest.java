@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,5 +32,12 @@ public class MenuProviderTest {
 
         int actual = menuProvider.menu();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("При возникновении InputMismatchException, метод должен корректно обработать это исключение")
+    public void inputMismatchExceptionTest() {
+        when(scanner.next()).thenThrow(InputMismatchException.class);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.arnor4eck;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuProvider {
@@ -12,7 +13,7 @@ public class MenuProvider {
 
     public int menu() {
         showMenu();
-        return scanner.nextInt();
+        return getNumber();
     }
 
     private void showMenu() {
@@ -26,5 +27,20 @@ public class MenuProvider {
                 "7. Экспорт данных\n" +
                 "0. Выход\n" +
                 "Выберите действие: ");
+    }
+
+    private int getNumber() {
+        int num;
+
+        while (true) {
+            try{
+                num = scanner.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Некорректный ввод. Введите число из списка.");
+            }
+        }
+
+        return num;
     }
 }
