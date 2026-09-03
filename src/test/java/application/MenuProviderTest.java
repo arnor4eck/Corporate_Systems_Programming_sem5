@@ -1,7 +1,6 @@
 package application;
 
 import com.arnor4eck.MenuProvider;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +37,6 @@ public class MenuProviderTest {
     @DisplayName("При возникновении InputMismatchException, метод должен корректно обработать это исключение")
     public void inputMismatchExceptionTest() {
         when(scanner.next()).thenThrow(InputMismatchException.class);
-
+        menuProvider.menu();
     }
 }
