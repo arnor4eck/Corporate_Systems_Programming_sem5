@@ -37,6 +37,7 @@ public class MenuProvider {
                 num = scanner.nextInt();
                 break;
             } catch (InputMismatchException e) {
+                scanner.nextLine();
                 System.out.println("Некорректный ввод. Введите число из списка.");
             }
         }
