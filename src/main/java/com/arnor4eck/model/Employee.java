@@ -5,7 +5,7 @@ import com.arnor4eck.util.enums.Role;
 import java.time.LocalDateTime;
 
 public record Employee (
-        Long id,
+        int id,
         String fullName,
         Role role,
         String passwordHash,
