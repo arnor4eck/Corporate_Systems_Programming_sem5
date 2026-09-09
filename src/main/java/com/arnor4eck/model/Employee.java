@@ -10,6 +10,6 @@ public record Employee (
         Role role,
         String passwordHash,
         boolean isActive,
-        LocalDateTime createAt
+        LocalDateTime createdAt
 )
 {}

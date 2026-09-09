@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record Request(
-        String id,
+        int id,
         Customer costumer,
         Employee employee,
         Plot plot,

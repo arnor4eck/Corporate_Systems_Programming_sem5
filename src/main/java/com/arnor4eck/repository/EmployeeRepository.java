@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class EmployersRepository extends AbstractJDBCRepository<Employee>{
+public class EmployeeRepository extends AbstractJDBCRepository<Employee>{
 
-    public EmployersRepository(DataSource dataSource) {
+    public EmployeeRepository(DataSource dataSource) {
         super(dataSource);
     }
 
@@ -66,7 +66,7 @@ public class EmployersRepository extends AbstractJDBCRepository<Employee>{
             stmt.setString(2, value.role().toString());
             stmt.setString(3, value.passwordHash());
             stmt.setBoolean(4, value.isActive());
-            stmt.setTimestamp(5, Timestamp.valueOf(value.createAt()));
+            stmt.setTimestamp(5, Timestamp.valueOf(value.createdAt()));
             stmt.executeUpdate();
         }
         catch (SQLException e){

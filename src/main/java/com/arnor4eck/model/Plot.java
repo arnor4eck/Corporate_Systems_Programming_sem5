@@ -3,13 +3,13 @@ package com.arnor4eck.model;
 import com.arnor4eck.util.enums.PlotStatus;
 
 public record Plot(
-        Long id,
+        int id,
         Sector sector,
         int rowNumber,
-        int plot_number ,
+        int plotNumber,
         PlotStatus status,
         int lengthCm,
-        int widthCm ,
+        float widthCm ,
         String coordinates
 ) {
 }
