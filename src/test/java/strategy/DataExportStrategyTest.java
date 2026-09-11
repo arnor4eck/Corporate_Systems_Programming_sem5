@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -22,13 +22,13 @@ public class DataExportStrategyTest {
     @ParameterizedTest
     @MethodSource("arguments")
     @DisplayName("При использовании метода find(), должна возвращаться подходящая стратегия")
-    public void testFindStrategy(int argument) {
-        var strategy = dataExportStrategy.find(String.valueOf(argument));
+    public void testFindStrategy(String argument) {
+        var strategy = dataExportStrategy.find(argument);
 
         assertNotNull(strategy);
     }
 
-    public static IntStream arguments() {
-        return IntStream.rangeClosed(0, 1);
+    public static Stream<String> arguments() {
+        return Stream.of("1", "3");
     }
 }
