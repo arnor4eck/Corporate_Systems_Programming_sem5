@@ -41,6 +41,6 @@ public class DataExportStrategyTest {
     }
 
     public static Stream<String> arguments() {
-        return Stream.of("1", "3");
+        return Stream.of("1", "2", "3", "4");
     }
 }
