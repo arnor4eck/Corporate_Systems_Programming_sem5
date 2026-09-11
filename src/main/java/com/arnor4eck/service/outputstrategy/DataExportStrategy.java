@@ -3,6 +3,7 @@ package com.arnor4eck.service.outputstrategy;
 import com.arnor4eck.model.Plot;
 import com.arnor4eck.model.Request;
 import com.arnor4eck.service.outputstrategy.concrete.AllValuesOutputStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 
 import java.util.Map;
 
@@ -18,6 +19,8 @@ public class DataExportStrategy {
     }
 
     public OutputStrategy find(String argument) {
-        return strategies.get(argument);
+        OutputStrategy strategy = strategies.get(argument);
+
+        return strategy == null ? new NotExistingStrategy() : strategy;
     }
 }

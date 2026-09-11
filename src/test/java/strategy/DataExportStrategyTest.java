@@ -1,14 +1,16 @@
 package strategy;
 
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DataExportStrategyTest {
 
@@ -26,6 +28,16 @@ public class DataExportStrategyTest {
         var strategy = dataExportStrategy.find(argument);
 
         assertNotNull(strategy);
+        assertFalse(strategy instanceof NotExistingStrategy);
+    }
+
+    @Test
+    @DisplayName("При попытке найти неизвестную стратегию, должна возвращаться " +
+            "особенная пустая стратегия")
+    public void testFindNotExistingStrategy() {
+        var strategy = dataExportStrategy.find("notExist");
+
+        assertInstanceOf(NotExistingStrategy.class, strategy);
     }
 
     public static Stream<String> arguments() {
