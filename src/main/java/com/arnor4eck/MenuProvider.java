@@ -28,7 +28,7 @@ public class MenuProvider {
     public void showMenu() {
         System.out.println(topic);
         for(int i = 0; i < units.size(); ++i) {
-            System.out.printf("\t%d. %s", i + 1, units.get(i));
+            System.out.printf("\t%d. %s\n", i + 1, units.get(i));
         }
         System.out.print("Выберите действие: ");
     }
