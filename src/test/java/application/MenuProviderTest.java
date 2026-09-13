@@ -1,5 +1,6 @@
 package application;
 
+import com.arnor4eck.MainMenuProvider;
 import com.arnor4eck.MenuProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,7 @@ public class MenuProviderTest {
     @BeforeEach
     public void setUp() {
         scanner = Mockito.mock(Scanner.class);
-        menuProvider = new MenuProvider(scanner);
+        menuProvider = new MainMenuProvider(scanner);
     }
 
     @Test
