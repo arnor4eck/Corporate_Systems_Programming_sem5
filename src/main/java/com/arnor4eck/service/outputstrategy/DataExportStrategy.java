@@ -5,6 +5,7 @@ import com.arnor4eck.model.Request;
 import com.arnor4eck.service.outputstrategy.concrete.AllValuesOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.ConcreteValueOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.StatisticsOutputStrategy;
 
 import java.util.Map;
 
@@ -21,7 +22,8 @@ public class DataExportStrategy {
                 entry("1", new AllValuesOutputStrategy<Request>(null)), // TODO
                 entry("2", new ConcreteValueOutputStrategy<Request>(null, null)), // TODO
                 entry("3", new AllValuesOutputStrategy<Plot>(null)), // TODO
-                entry("4", new ConcreteValueOutputStrategy<Plot>(null, null)) // TODO
+                entry("4", new ConcreteValueOutputStrategy<Plot>(null, null)), // TODO
+                entry("6", new StatisticsOutputStrategy(null, null)) // TODO
         );
     }
 
