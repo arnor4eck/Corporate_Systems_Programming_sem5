@@ -1,6 +1,5 @@
 package application;
 
-import com.arnor4eck.MainMenuProvider;
 import com.arnor4eck.MenuProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +9,7 @@ import org.mockito.Mockito;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +21,7 @@ public class MenuProviderTest {
     @BeforeEach
     public void setUp() {
         scanner = Mockito.mock(Scanner.class);
-        menuProvider = new MainMenuProvider(scanner);
+        menuProvider = new MenuProvider("topic", scanner, emptyList());
     }
 
     @Test

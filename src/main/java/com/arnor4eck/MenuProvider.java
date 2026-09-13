@@ -1,14 +1,23 @@
 package com.arnor4eck;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
-public abstract class MenuProvider {
+public class MenuProvider {
 
     private final Scanner scanner;
+    private final String topic;
+    private final List<String> units;
 
-    public MenuProvider(Scanner scanner) {
+    public MenuProvider(
+            String topic,
+            Scanner scanner,
+            List<String> units
+    ) {
         this.scanner = scanner;
+        this.topic = topic;
+        this.units = units;
     }
 
     public int menu() {
@@ -16,7 +25,13 @@ public abstract class MenuProvider {
         return getNumber();
     }
 
-    public abstract void showMenu();
+    public void showMenu() {
+        System.out.println(topic);
+        for(int i = 0; i < units.size(); ++i) {
+            System.out.printf("\t%d. %s", i + 1, units.get(i));
+        }
+        System.out.print("Выберите действие: ");
+    }
 
     private int getNumber() {
         int num;
