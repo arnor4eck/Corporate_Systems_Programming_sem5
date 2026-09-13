@@ -14,6 +14,8 @@ public class DataExportStrategy {
 
     private final Map<String, OutputStrategy> strategies;
 
+    private static final OutputStrategy NOT_EXISTING_STRATEGY = new NotExistingStrategy();
+
     public DataExportStrategy() {
         strategies = Map.ofEntries(
                 entry("1", new AllValuesOutputStrategy<Request>(null)), // TODO
@@ -26,6 +28,6 @@ public class DataExportStrategy {
     public OutputStrategy find(String argument) {
         OutputStrategy strategy = strategies.get(argument);
 
-        return strategy == null ? new NotExistingStrategy() : strategy;
+        return strategy == null ? NOT_EXISTING_STRATEGY : strategy;
     }
 }
