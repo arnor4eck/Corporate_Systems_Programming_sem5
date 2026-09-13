@@ -20,15 +20,15 @@ public class ConcreteValueOutputStrategy<T> implements OutputStrategy {
     }
 
     @Override
-    public void act() {
+    public String act() {
         try {
             int id = scanner.nextInt();
             T val = repository.get(id); // TODO null?
 
-            System.out.println(val);
+            return val.toString();
         } catch (InputMismatchException e) {
             scanner.nextLine();
-            System.out.println("Некорректный ввод. Введённый символ не является числом");
+            return "Некорректный ввод. Введённый символ не является числом";
         }
     }
 }

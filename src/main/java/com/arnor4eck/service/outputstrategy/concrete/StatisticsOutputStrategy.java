@@ -20,15 +20,13 @@ public class StatisticsOutputStrategy implements OutputStrategy {
     }
 
     @Override
-    public void act() {
+    public String act() {
         List<String> statistics = List.of(
             getStatistics(plotRepository, "мест"),
             getStatistics(requestRepository, "запросов")
         );
 
-        String stat = String.join("\n", statistics);
-
-        System.out.println(stat);
+        return String.join("\n", statistics);
     }
 
     private <T> String getStatistics(Repository<T> repository, String unit) {

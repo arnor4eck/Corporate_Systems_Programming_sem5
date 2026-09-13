@@ -4,7 +4,7 @@ import com.arnor4eck.service.outputstrategy.OutputStrategy;
 
 public class NotExistingStrategy implements OutputStrategy {
     @Override
-    public void act() {
-        System.out.println("Неизвестная команда.");
+    public String act() {
+        return "Неизвестная команда.";
     }
 }
