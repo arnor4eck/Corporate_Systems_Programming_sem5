@@ -7,16 +7,16 @@ import java.time.LocalDateTime;
 
 public record Request(
         int id,
-        Customer costumer,
-        Employee employee,
-        Plot plot,
+        int costumerId,
+        int employeeId,
+        int plotId,
         String deceasedFullName,
         LocalDate deceasedBirthday,
         LocalDate deceasedDeathday,
-        String deceased_certificate,
+        String deceasedCertificate,
         RequestStatus status,
-        LocalDateTime createdAt,
         String totalCost,
-        String note
+        String note,
+        LocalDateTime createdAt
 ) {
 }
