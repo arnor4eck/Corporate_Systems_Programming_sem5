@@ -59,7 +59,7 @@ public final class Application {
                 break;
             }
 
-            OutputStrategy strategy = mainMenu.find(String.valueOf(enteredNum));
+            OutputStrategy strategy = mainMenu.find(enteredNum);
             System.out.println(strategy.act());
         }
     }

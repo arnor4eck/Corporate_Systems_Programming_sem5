@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +41,7 @@ public class DataExportStrategyTest {
     @ParameterizedTest
     @MethodSource("arguments")
     @DisplayName("При использовании метода find(), должна возвращаться подходящая стратегия")
-    public void testFindStrategy(String argument) {
+    public void testFindStrategy(int argument) {
         var strategy = dataExportStrategy.find(argument);
 
         assertNotNull(strategy);
@@ -51,12 +52,12 @@ public class DataExportStrategyTest {
     @DisplayName("При попытке найти неизвестную стратегию, должна возвращаться " +
             "особенная пустая стратегия")
     public void testFindNotExistingStrategy() {
-        var strategy = dataExportStrategy.find("notExist");
+        var strategy = dataExportStrategy.find(-1);
 
         assertInstanceOf(NotExistingStrategy.class, strategy);
     }
 
-    public static Stream<String> arguments() {
-        return Stream.of("1", "2", "3", "4");
+    public static IntStream arguments() {
+        return IntStream.rangeClosed(1, 4);
     }
 }
