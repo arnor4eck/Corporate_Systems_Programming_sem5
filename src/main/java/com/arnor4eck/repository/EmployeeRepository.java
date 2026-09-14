@@ -11,12 +11,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class EmployeeRepository extends AbstractJDBCRepository<Employee>{
+public class EmployeeRepository extends AbstractJDBCIRepository<Employee> {
 
     public EmployeeRepository(DataSource dataSource) {
         super(dataSource);
     }
 
+    @Override
+    protected Employee mapRow(ResultSet rs) throws SQLException {
+        return new Employee(
+                rs.getInt("id"),
+                rs.getString("full_name"),
+                Role.fromString(rs.getString("role")),
+                rs.getString("password_hash"),
+                rs.getBoolean("is_active"),
+                rs.getObject("created_at", LocalDateTime.class)
+        );
+    }
     @Override
     public Optional<Employee> get(int id) {
         String sql = "SELECT id, full_name, role," +
@@ -94,17 +105,5 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee>{
             ));
         }
 
-    }
-
-    @Override
-    protected Employee mapRow(ResultSet rs) throws SQLException {
-        return new Employee(
-                rs.getInt("id"),
-                rs.getString("full_name"),
-                Role.fromString(rs.getString("role")),
-                rs.getString("password_hash"),
-                rs.getBoolean("is_active"),
-                rs.getObject("created_at", LocalDateTime.class)
-        );
     }
 }

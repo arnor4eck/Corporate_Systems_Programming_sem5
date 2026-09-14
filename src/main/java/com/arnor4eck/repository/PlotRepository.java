@@ -10,8 +10,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class PlotIRepository extends AbstractJDBCIRepository<Plot> {
-    public PlotIRepository(DataSource dataSource) {
+public class PlotRepository extends AbstractJDBCIRepository<Plot> {
+    public PlotRepository(DataSource dataSource) {
         super(dataSource);
     }
 
@@ -78,17 +78,17 @@ public class PlotIRepository extends AbstractJDBCIRepository<Plot> {
         String sql =
                 "INSERT INTO plots(sector_id, row_number, plot_number, plot_status, length_cm, " +
                 "width_cm, coordinaties) " +
-                "VALUES(?, ?, ?, ?, ?);";
+                "VALUES(?, ?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, value.sectorId());
             stmt.setInt(2, value.rowNumber());
             stmt.setInt(3, value.plotNumber());
-            stmt.setString(3, value.status().toString());
-            stmt.setFloat(3, value.lengthCm());
-            stmt.setFloat(3, value.widthCm());
-            stmt.setString(3, value.coordinates());
+            stmt.setString(4, value.status().toString());
+            stmt.setFloat(5, value.lengthCm());
+            stmt.setFloat(6, value.widthCm());
+            stmt.setString(7, value.coordinates());
             stmt.executeUpdate();
         }
         catch (SQLException e){

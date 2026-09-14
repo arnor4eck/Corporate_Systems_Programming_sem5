@@ -12,8 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class RequestIRepository extends AbstractJDBCIRepository<Request> {
-    public RequestIRepository(DataSource dataSource) {
+public class RequestRepository extends AbstractJDBCIRepository<Request> {
+    public RequestRepository(DataSource dataSource) {
         super(dataSource);
     }
 

@@ -4,11 +4,11 @@ import com.arnor4eck.util.enums.PlotStatus;
 
 public record Plot(
         int id,
-        Sector sector,
+        int sectorId,
         int rowNumber,
         int plotNumber,
         PlotStatus status,
-        int lengthCm,
+        float lengthCm,
         float widthCm ,
         String coordinates
 ) {
