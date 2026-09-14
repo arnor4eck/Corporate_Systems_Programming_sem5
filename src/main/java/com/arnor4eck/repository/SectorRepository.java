@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class SectorRepository extends AbstractJDBCIRepository<Sector> {
+public class SectorRepository extends AbstractJDBCRepository<Sector> {
     public SectorRepository(DataSource dataSource) {
         super(dataSource);
     }

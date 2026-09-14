@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class EmployeeRepository extends AbstractJDBCIRepository<Employee> {
+public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
 
     public EmployeeRepository(DataSource dataSource) {
         super(dataSource);

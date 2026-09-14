@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class RequestRepository extends AbstractJDBCIRepository<Request> {
+public class RequestRepository extends AbstractJDBCRepository<Request> {
     public RequestRepository(DataSource dataSource) {
         super(dataSource);
     }

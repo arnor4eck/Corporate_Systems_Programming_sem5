@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class PlotRepository extends AbstractJDBCIRepository<Plot> {
+public class PlotRepository extends AbstractJDBCRepository<Plot> {
     public PlotRepository(DataSource dataSource) {
         super(dataSource);
     }
