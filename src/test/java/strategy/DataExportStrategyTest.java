@@ -2,7 +2,9 @@ package strategy;
 
 import com.arnor4eck.model.Plot;
 import com.arnor4eck.model.Request;
+import com.arnor4eck.repository.Repository;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
+import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
 import com.arnor4eck.service.outputstrategy.concrete.AllValuesOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.ConcreteValueOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
@@ -13,9 +15,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class DataExportStrategyTest {
 
@@ -24,12 +28,12 @@ public class DataExportStrategyTest {
     @BeforeEach
     public void setUp() {
         dataExportStrategy = new DataExportStrategy(
-                List.of(
-                        new AllValuesOutputStrategy<Request>(null),
-                        new ConcreteValueOutputStrategy<Request>(null, null),
-                        new AllValuesOutputStrategy<Plot>(null),
-                        new ConcreteValueOutputStrategy<Plot>(null, null)
-                )
+            List.of(
+                OutputStrategyFactory.concreteValue(mock(Repository.class), mock(Scanner.class)),
+                OutputStrategyFactory.allValues(mock(Repository.class)),
+                OutputStrategyFactory.concreteValue(mock(Repository.class), mock(Scanner.class)),
+                OutputStrategyFactory.allValues(mock(Repository.class))
+            )
         );
     }
 
