@@ -1,11 +1,17 @@
 package com.arnor4eck;
 
+import com.arnor4eck.service.outputstrategy.DataExportStrategy;
+import com.arnor4eck.service.outputstrategy.OutputStrategy;
+import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
+import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
+
 import java.util.List;
 import java.util.Scanner;
 
 public final class Application {
 
     private final MenuProvider menu;
+    private final DataExportStrategy mainMenu;
 
     private static final String EXIT = "Выход";
     private static final List<String> MENU_UNITS = List.of("Заявки", "Места на кладбище", "Экспорт данных", EXIT);
@@ -21,6 +27,29 @@ public final class Application {
                 scanner,
                 MENU_UNITS
         );
+
+        this.mainMenu = new DataExportStrategy(
+            List.of(
+                OutputStrategyFactory.menuProvider(
+                        "========= ЗАЯВКИ =========",
+                        scanner,
+                        List.of("Все заявки", "Конкретная заявка (id)", "Фильтрация по статусу заявки", "Статистика"),
+                        List.of(new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy())
+                ),
+                OutputStrategyFactory.menuProvider(
+                        "========= МЕСТА НА КЛАДБИЩЕ =========",
+                        scanner,
+                        List.of("Все места", "Конкретное место (id)", "Фильтрация по статусу места", "Фильтрация по сектору"),
+                        List.of(new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy())
+                ),
+                OutputStrategyFactory.menuProvider(
+                        "========= ЭКСПОРТ ДАННЫХ =========",
+                        scanner,
+                        List.of("Общий экспорт", "Экспорт заявок", "Экспорт мест"),
+                        List.of(new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy())
+                )
+            )
+        );
     }
 
     public void run() {
@@ -29,6 +58,9 @@ public final class Application {
             if (shouldBeExit(enteredNum)) {
                 break;
             }
+
+            OutputStrategy strategy = mainMenu.find(String.valueOf(enteredNum));
+            System.out.println(strategy.act());
         }
     }
 
