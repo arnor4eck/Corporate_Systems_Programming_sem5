@@ -1,6 +1,10 @@
 package strategy;
 
+import com.arnor4eck.model.Plot;
+import com.arnor4eck.model.Request;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.AllValuesOutputStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.ConcreteValueOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +23,14 @@ public class DataExportStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        dataExportStrategy = new DataExportStrategy();
+        dataExportStrategy = new DataExportStrategy(
+                List.of(
+                        new AllValuesOutputStrategy<Request>(null),
+                        new ConcreteValueOutputStrategy<Request>(null, null),
+                        new AllValuesOutputStrategy<Plot>(null),
+                        new ConcreteValueOutputStrategy<Plot>(null, null)
+                )
+        );
     }
 
     @ParameterizedTest

@@ -1,15 +1,10 @@
 package com.arnor4eck.service.outputstrategy;
 
-import com.arnor4eck.model.Plot;
-import com.arnor4eck.model.Request;
-import com.arnor4eck.service.outputstrategy.concrete.AllValuesOutputStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.ConcreteValueOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.StatisticsOutputStrategy;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import static java.util.Map.entry;
 
 public class DataExportStrategy {
 
@@ -17,19 +12,15 @@ public class DataExportStrategy {
 
     private static final OutputStrategy NOT_EXISTING_STRATEGY = new NotExistingStrategy();
 
-    public DataExportStrategy() {
-        strategies = Map.ofEntries(
-                entry("1", new AllValuesOutputStrategy<Request>(null)), // TODO
-                entry("2", new ConcreteValueOutputStrategy<Request>(null, null)), // TODO
-                entry("3", new AllValuesOutputStrategy<Plot>(null)), // TODO
-                entry("4", new ConcreteValueOutputStrategy<Plot>(null, null)), // TODO
-                entry("6", new StatisticsOutputStrategy(null, null)) // TODO
-        );
+    public DataExportStrategy(List<? extends OutputStrategy> strategies) {
+        this.strategies = new HashMap<>(strategies.size(), 1.1f);
+
+        for(int i = 0; i < strategies.size(); ++i) {
+            this.strategies.put(String.valueOf(i + 1), strategies.get(i));
+        }
     }
 
     public OutputStrategy find(String argument) {
-        OutputStrategy strategy = strategies.get(argument);
-
-        return strategy == null ? NOT_EXISTING_STRATEGY : strategy;
+        return strategies.getOrDefault(argument, NOT_EXISTING_STRATEGY);
     }
 }
