@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class EmployeeRepository extends AbstractJDBCRepository<Employee>{
 
@@ -17,7 +18,7 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee>{
     }
 
     @Override
-    public Employee get(int id) {
+    public Optional<Employee> get(int id) {
         String sql = "SELECT id, full_name, role," +
                 " password_hash, is_active, created_at" +
                 " FROM employee WHERE id = ?";
@@ -25,7 +26,10 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee>{
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()){
-                return mapRow(rs);
+                if (rs.next()) {
+                    return Optional.empty();
+                }
+                return Optional.of(mapRow(rs));
             }
         }
         catch (SQLException e){
