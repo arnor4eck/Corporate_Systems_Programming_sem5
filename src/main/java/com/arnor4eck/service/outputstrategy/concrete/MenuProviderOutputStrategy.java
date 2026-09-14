@@ -26,6 +26,8 @@ public class MenuProviderOutputStrategy extends MenuProvider implements OutputSt
     @Override
     public String act() {
         int entered = menu();
-        return dataExportStrategy.find(String.valueOf(entered)).act();
+        OutputStrategy strategy = dataExportStrategy.find(String.valueOf(entered));
+
+        return strategy.act();
     }
 }
