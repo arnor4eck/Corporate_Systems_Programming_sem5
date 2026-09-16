@@ -38,7 +38,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()){
-                if (rs.next()) {
+                if (!rs.next()) {
                     return Optional.empty();
                 }
                 return Optional.of(mapRow(rs));
