@@ -33,7 +33,7 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()){
-                if (rs.next()) {
+                if (!rs.next()) {
                     return Optional.empty();
                 }
                 return Optional.of(mapRow(rs));
@@ -48,7 +48,7 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
 
     @Override
     public Collection<Sector> getAll() {
-        String sql = "SELECT id, name, created_at" +
+        String sql = "SELECT id, name, created_at " +
                 "FROM sectors";
         List<Sector> list = new ArrayList<>();
         try (Connection conn = getConnection();

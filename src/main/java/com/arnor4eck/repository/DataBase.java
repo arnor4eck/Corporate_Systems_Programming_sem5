@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DataBase implements AutoCloseable {
+public class DataBase {
     private final DataSource dataSource;
 
     public DataBase(String jdbcUrl) throws SQLException {
@@ -55,11 +55,5 @@ public class DataBase implements AutoCloseable {
 
     public Connection getConnection() throws SQLException {
         return dataSource.getConnection();
-    }
-
-    @Override
-    public void close() {
-        // PGSimpleDataSource не создает пул соединений, поэтому закрывать сам DataSource не нужно.
-        // Метод оставлен для соблюдения интерфейса AutoCloseable.
     }
 }

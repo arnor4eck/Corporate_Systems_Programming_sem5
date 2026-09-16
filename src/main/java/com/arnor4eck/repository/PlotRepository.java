@@ -55,7 +55,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
     public Collection<Plot> getAll() {
         String sql = "SELECT id, sector_id, row_number," +
                 " plot_number, plot_status, length_cm, " +
-                "width_cm, coordinates" +
+                "width_cm, coordinates " +
                 "FROM plots";
         List<Plot> list = new ArrayList<>();
         try (Connection conn = getConnection();
@@ -76,7 +76,8 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
     @Override
     public void save(Plot value) {
         String sql =
-                "INSERT INTO plots(sector_id, row_number, plot_number, plot_status, length_cm, " +
+                "INSERT INTO plots(sector_id, row_number, " +
+                        "plot_number, plot_status, length_cm, " +
                 "width_cm, coordinaties) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?);";
 

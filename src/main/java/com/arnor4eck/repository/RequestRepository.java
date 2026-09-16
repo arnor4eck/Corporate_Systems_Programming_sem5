@@ -37,15 +37,15 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
     @Override
     public Optional<Request> get(int id) {
         String sql = "SELECT id, customer_id, employee_id," +
-                " plot_id, deceased_full_name, deceased_birthday" +
-                "deceased_birthday, deceased_deathday, deceased_certificate" +
+                " plot_id, deceased_full_name, " +
+                "deceased_birthday, deceased_deathday, deceased_certificate, " +
                 "status, total_cost, note, created_at" +
                 " FROM requests WHERE id = ?";
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()){
-                if (rs.next()) {
+                if (!rs.next()) {
                     return Optional.empty();
                 }
                 return Optional.of(mapRow(rs));
@@ -61,9 +61,9 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
     @Override
     public Collection<Request> getAll() {
         String sql = "SELECT id, customer_id, employee_id," +
-                " plot_id, deceased_full_name, deceased_birthday" +
-                "deceased_birthday, deceased_deathday, deceased_certificate" +
-                "status, total_cost, note, created_at" +
+                " plot_id, deceased_full_name, deceased_birthday " +
+                "deceased_birthday, deceased_deathday, deceased_certificate " +
+                "status, total_cost, note, created_at " +
                 "FROM requests";
         List<Request> list = new ArrayList<>();
         try (Connection conn = getConnection();
@@ -85,10 +85,10 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
     public void save(Request value) {
         String sql =
                 "INSERT INTO requests(id, customer_id, employee_id," +
-                " plot_id, deceased_full_name, deceased_birthday" +
-                "deceased_birthday, deceased_deathday, deceased_certificate" +
-                "status, total_cost, note, created_at" +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                " plot_id, deceased_full_name, deceased_birthday " +
+                "deceased_birthday, deceased_deathday, deceased_certificate " +
+                "status, total_cost, note, created_at " +
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){

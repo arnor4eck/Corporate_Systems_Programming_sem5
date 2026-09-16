@@ -50,7 +50,7 @@ public class CustomerRepository extends AbstractJDBCRepository<Customer> {
     @Override
     public Collection<Customer> getAll() {
         String sql = "SELECT id, full_name, phone," +
-                "email, created_at" +
+                "email, created_at " +
                 "FROM customers";
         List<Customer> list = new ArrayList<>();
         try (Connection conn = getConnection();

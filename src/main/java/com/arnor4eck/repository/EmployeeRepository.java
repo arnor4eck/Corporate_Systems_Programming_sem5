@@ -37,7 +37,7 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()){
-                if (rs.next()) {
+                if (!rs.next()) {
                     return Optional.empty();
                 }
                 return Optional.of(mapRow(rs));
@@ -53,7 +53,7 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
     @Override
     public Collection<Employee> getAll() {
         String sql = "SELECT id, full_name, role," +
-                "password_hash, is_active, created_at" +
+                "password_hash, is_active, created_at " +
                 "FROM employee";
         List<Employee> list = new ArrayList<>();
         try (Connection conn = getConnection();
@@ -73,7 +73,8 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
 
     @Override
     public void save(Employee value) {
-        String sql = "INSERT INTO employee(full_name, role, password_hash, is_active, created_at) VALUES(?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO employee(full_name, role, password_hash, " +
+                "is_active, created_at) VALUES(?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){

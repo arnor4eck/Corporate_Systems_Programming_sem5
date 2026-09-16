@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class AbstractJDBCRepository<T> implements IRepository<T> {
+public abstract class AbstractJDBCRepository<T> implements Repository<T> {
     protected final DataSource dataSource;
 
     public AbstractJDBCRepository(DataSource dataSource) {
