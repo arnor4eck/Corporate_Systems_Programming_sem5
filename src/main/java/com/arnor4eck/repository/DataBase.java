@@ -1,6 +1,8 @@
 package com.arnor4eck.repository;
 
 import java.nio.charset.StandardCharsets;
+
+import io.github.cdimascio.dotenv.Dotenv;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
@@ -12,6 +14,9 @@ import java.sql.Statement;
 
 public class DataBase {
     private final DataSource dataSource;
+    private final String dbName = "";
+    private final String dbUser = "";
+    private final String dbPassword = "";
 
     public DataBase(String jdbcUrl) throws SQLException {
         try {
@@ -23,11 +28,19 @@ public class DataBase {
     }
 
     private DataSource initDataSource(String jdbcUrl) {
+        Dotenv dotenv = Dotenv.load();
+
         PGSimpleDataSource source = new PGSimpleDataSource();
-        source.setUrl(jdbcUrl);
-        source.setUser("username");
-        source.setPassword("password");
-        //TODO конфиг бд
+
+        String url = String.format("jdbc:postgresql://%s:%s/%s",
+                dotenv.get("DB_HOST"),
+                dotenv.get("DB_PORT"),
+                dotenv.get("DB_NAME")
+        );
+
+        source.setUrl(url);
+        source.setUser(dotenv.get("DB_USER"));
+        source.setPassword(dotenv.get("DB_PASSWORD"));
 
         return source;
     }
