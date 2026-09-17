@@ -37,13 +37,11 @@ public class RequestGenerator {
 
         String deceasedFullName = NAMES[RANDOM.nextInt(NAMES.length)];
 
-        // Генерация случайной даты рождения (между 1940 и 2000 годом)
         LocalDate deceasedBirthday = getRandomDate(
                 LocalDate.of(1940, 1, 1),
                 LocalDate.of(2000, 1, 1)
         );
 
-        // Дата смерти позже даты рождения (между 2020 и 2026 годами)
         LocalDate deceasedDeathday = getRandomDate(
                 LocalDate.of(2020, 1, 1),
                 LocalDate.now()
@@ -51,16 +49,13 @@ public class RequestGenerator {
 
         String deceasedCertificate = "CERT-" + RANDOM.nextInt(100_000, 999_999);
 
-        // Случайный статус из вашего enum RequestStatus
         RequestStatus[] statuses = RequestStatus.values();
         RequestStatus status = statuses[RANDOM.nextInt(statuses.length)];
 
-        // Стоимость от 1000 до 100000 с копейками
         String totalCost = String.format("%.2f", RANDOM.nextDouble(1000.0, 100000.0)).replace(',', '.');
 
         String note = NOTES[RANDOM.nextInt(NOTES.length)];
 
-        // Время создания за последние 30 дней
         LocalDateTime createdAt = LocalDateTime.now().minusDays(RANDOM.nextInt(0, 30));
 
         return new Request(
@@ -79,7 +74,6 @@ public class RequestGenerator {
         );
     }
 
-    // Вспомогательный метод для генерации случайных дат LocalDate
     private static LocalDate getRandomDate(LocalDate startInclusive, LocalDate endExclusive) {
         long startEpochDay = startInclusive.toEpochDay();
         long endEpochDay = endExclusive.toEpochDay();

@@ -14,20 +14,18 @@ import java.sql.Statement;
 
 public class DataBase {
     private final DataSource dataSource;
-    private final String dbName = "";
-    private final String dbUser = "";
-    private final String dbPassword = "";
 
-    public DataBase(String jdbcUrl) throws SQLException {
+
+    public DataBase() throws SQLException {
         try {
-            this.dataSource = initDataSource(jdbcUrl);
+            this.dataSource = initDataSource();
             initDb();
         } catch (Exception e) {
             throw new SQLException("Init db error", e.getMessage());
         }
     }
 
-    private DataSource initDataSource(String jdbcUrl) {
+    private DataSource initDataSource() {
         Dotenv dotenv = Dotenv.load();
 
         PGSimpleDataSource source = new PGSimpleDataSource();

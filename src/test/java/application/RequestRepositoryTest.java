@@ -84,7 +84,6 @@ public class RequestRepositoryTest {
     @Test
     @DisplayName("Тест ошибки подключения к базе данных в методе get")
     public void connectionErrorTestOnGet() throws SQLException {
-        int requestId = 1;
         String sqlErrorMessage = "Connection connection timed out";
         given(connection.prepareStatement(anyString())).willThrow(new SQLException(sqlErrorMessage));
 
