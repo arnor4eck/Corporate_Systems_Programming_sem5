@@ -6,9 +6,9 @@ import com.arnor4eck.repository.RequestRepository;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
+import com.arnor4eck.service.outputstrategy.concrete.CreatePlotOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Scanner;
 
@@ -51,12 +51,13 @@ public final class Application {
                 OutputStrategyFactory.menuProvider(
                         "========= МЕСТА НА КЛАДБИЩЕ =========",
                         scanner,
-                        List.of("Все места", "Конкретное место (id)", "Фильтрация по статусу места", "Фильтрация по сектору"),
+                        List.of("Все места", "Конкретное место (id)", "Фильтрация по статусу места", "Фильтрация по сектору", "Создать место"),
                         List.of(
                             OutputStrategyFactory.allValues(plotRepository),
                             OutputStrategyFactory.concreteValue(plotRepository, scanner),
                             new NotExistingStrategy(),
-                            new NotExistingStrategy()
+                            new NotExistingStrategy(),
+                            new CreatePlotOutputStrategy(plotRepository, scanner)
                         )
                 ),
                 OutputStrategyFactory.menuProvider(
