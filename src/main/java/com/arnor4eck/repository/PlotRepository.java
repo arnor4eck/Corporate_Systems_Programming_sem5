@@ -3,10 +3,7 @@ package com.arnor4eck.repository;
 import com.arnor4eck.model.Plot;
 import com.arnor4eck.util.enums.PlotStatus;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +21,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
                 rs.getInt("sector_id"),
                 rs.getInt("row_number"),
                 rs.getInt("plot_number"),
-                PlotStatus.fromString(rs.getString("plot_status")),
+                PlotStatus.fromString(rs.getString("status")),
                 rs.getFloat("length_cm"),
                 rs.getFloat("width_сm"),
                 rs.getString("coordinates")
@@ -33,7 +30,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
     @Override
     public Optional<Plot> get(int id) {
         String sql = "SELECT id, sector_id, row_number," +
-                " plot_number, plot_status, length_cm, " +
+                " plot_number, status, length_cm, " +
                 "width_sm, coordinates" +
                 " FROM plots WHERE id = ?";
         try (Connection conn = this.getConnection();
@@ -56,7 +53,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
     @Override
     public Collection<Plot> getAll() {
         String sql = "SELECT id, sector_id, row_number," +
-                " plot_number, plot_status, length_cm, " +
+                " plot_number,  status, length_cm, " +
                 "width_cm, coordinates " +
                 "FROM plots";
         List<Plot> list = new ArrayList<>();
@@ -79,8 +76,8 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
     public void save(Plot value) {
         String sql =
                 "INSERT INTO plots(sector_id, row_number, " +
-                        "plot_number, plot_status, length_cm, " +
-                "width_cm, coordinaties) " +
+                        "plot_number, status, length_cm, " +
+                "width_cm, coordinates) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
@@ -88,7 +85,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
             stmt.setInt(1, value.sectorId());
             stmt.setInt(2, value.rowNumber());
             stmt.setInt(3, value.plotNumber());
-            stmt.setString(4, value.status().toString());
+            stmt.setObject(4, value.status().toString(), Types.OTHER);
             stmt.setFloat(5, value.lengthCm());
             stmt.setFloat(6, value.widthCm());
             stmt.setString(7, value.coordinates());
