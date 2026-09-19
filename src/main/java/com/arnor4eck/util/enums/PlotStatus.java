@@ -1,11 +1,20 @@
 package com.arnor4eck.util.enums;
 
-import com.arnor4eck.model.Plot;
-
 public enum PlotStatus {
-    FREE,
-    RESERVED,
-    OCCUPIED;
+    FREE("Свободно"),
+    RESERVED("Зарезервировано"),
+    OCCUPIED("Занято");
+
+    private final String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    PlotStatus(String value) {
+        this.value = value;
+    }
+
     public static PlotStatus fromString(String str) {
         if (str == null) {
             throw new IllegalArgumentException("Error with parse Plot");
@@ -15,6 +24,7 @@ public enum PlotStatus {
                 return plotStatus;
             }
         }
-        throw new IllegalArgumentException("Error with parse Plot");
+        throw new IllegalArgumentException("Найденного значения не найдено.");
     }
+
 }
