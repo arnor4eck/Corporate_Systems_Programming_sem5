@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS customers (
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+INSERT INTO customers(full_name, phone, passport_data) VALUES ('Владислав Поздняков', '1231233245', '1111 222222');
+
 -- 3. Таблица: Сектора кладбища
 CREATE TABLE IF NOT EXISTS sectors (
                          id BIGSERIAL PRIMARY KEY,
@@ -56,6 +58,8 @@ CREATE TABLE IF NOT EXISTS employees (
                            is_active BOOLEAN DEFAULT TRUE,
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO employees(full_name, login, password_hash) VALUES ('Гой Гоевич', 'mail@mail.mail', 'password');
 
 -- 6. Таблица: Заявки (содержит данные об умершем)
 CREATE TABLE IF NOT EXISTS burial_requests (
