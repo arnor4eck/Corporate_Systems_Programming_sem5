@@ -31,7 +31,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
     public Optional<Plot> get(int id) {
         String sql = "SELECT id, sector_id, row_number," +
                 " plot_number, status, length_cm, " +
-                "width_sm, coordinates" +
+                "width_cm, coordinates" +
                 " FROM plots WHERE id = ?";
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
