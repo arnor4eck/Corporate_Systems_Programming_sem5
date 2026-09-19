@@ -1,9 +1,7 @@
 package com.arnor4eck.repository;
 
-import com.arnor4eck.model.Customer;
 import com.arnor4eck.model.Sector;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SectorRepository extends AbstractJDBCRepository<Sector> {
-    public SectorRepository(DataSource dataSource) {
+    public SectorRepository(DataBase dataSource) {
         super(dataSource);
     }
 

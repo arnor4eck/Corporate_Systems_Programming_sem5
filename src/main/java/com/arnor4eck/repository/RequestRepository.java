@@ -3,7 +3,6 @@ package com.arnor4eck.repository;
 import com.arnor4eck.model.Request;
 import com.arnor4eck.util.enums.RequestStatus;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class RequestRepository extends AbstractJDBCRepository<Request> {
-    public RequestRepository(DataSource dataSource) {
+    public RequestRepository(DataBase dataSource) {
         super(dataSource);
     }
 

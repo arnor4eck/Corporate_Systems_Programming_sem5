@@ -3,15 +3,17 @@ package com.arnor4eck.repository;
 import com.arnor4eck.model.Plot;
 import com.arnor4eck.util.enums.PlotStatus;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 public class PlotRepository extends AbstractJDBCRepository<Plot> {
-    public PlotRepository(DataSource dataSource) {
+    public PlotRepository(DataBase dataSource) {
         super(dataSource);
     }
 

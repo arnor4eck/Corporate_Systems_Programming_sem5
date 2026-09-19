@@ -3,7 +3,6 @@ package com.arnor4eck.repository;
 import com.arnor4eck.model.Employee;
 import com.arnor4eck.util.enums.Role;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
 
-    public EmployeeRepository(DataSource dataSource) {
+    public EmployeeRepository(DataBase dataSource) {
         super(dataSource);
     }
 

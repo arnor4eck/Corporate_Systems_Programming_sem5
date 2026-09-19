@@ -1,10 +1,13 @@
 package com.arnor4eck;
 
+import com.arnor4eck.repository.DataBase;
+import com.arnor4eck.repository.RequestRepository;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,6 +30,8 @@ public final class Application {
                 scanner,
                 MENU_UNITS
         );
+        var dataSource = new DataBase();
+        var requestRepository = new RequestRepository();
 
         this.mainMenu = new DataExportStrategy(
             List.of(

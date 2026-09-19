@@ -2,7 +2,6 @@ package com.arnor4eck.repository;
 
 import com.arnor4eck.model.Customer;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CustomerRepository extends AbstractJDBCRepository<Customer> {
-    public CustomerRepository(DataSource dataSource) {
+    public CustomerRepository(DataBase dataSource) {
         super(dataSource);
     }
 
