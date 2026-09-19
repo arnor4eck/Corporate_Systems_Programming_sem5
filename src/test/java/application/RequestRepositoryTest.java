@@ -2,6 +2,7 @@ package application;
 
 import application.util.RequestGenerator;
 import com.arnor4eck.model.Request;
+import com.arnor4eck.repository.DataBase;
 import com.arnor4eck.repository.RequestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,14 +26,14 @@ public class RequestRepositoryTest {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     private RequestRepository requestRepository;
-    private DataSource dataSource;
+    private DataBase dataSource;
 
     @BeforeEach
     public void setUp() throws SQLException {
         connection = Mockito.mock(Connection.class);
         preparedStatement = Mockito.mock(PreparedStatement.class);
         resultSet = Mockito.mock(ResultSet.class);
-        dataSource = Mockito.mock(DataSource.class);
+        dataSource = Mockito.mock(DataBase.class);
         requestRepository = new RequestRepository(dataSource);
         doReturn(connection).when(dataSource).getConnection();
     }

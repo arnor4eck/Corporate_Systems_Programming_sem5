@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +37,7 @@ public class ConcreteValueOutputStrategyTest {
         Employee employee = new Employee(expectedId, "name", Role.ADMIN, "password", true, LocalDateTime.now());
 
         when(scanner.nextInt()).thenReturn(expectedId);
-        when(repository.get(eq(expectedId))).thenReturn(employee);
+        when(repository.get(eq(expectedId))).thenReturn(Optional.of(employee));
 
         String expected = strategy.act();
 
