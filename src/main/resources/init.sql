@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS burial_requests CASCADE;
+DROP TABLE IF EXISTS requests CASCADE;
 DROP TABLE IF EXISTS plots           CASCADE;
 DROP TABLE IF EXISTS employees       CASCADE;
 DROP TABLE IF EXISTS sectors         CASCADE;
@@ -19,21 +19,19 @@ CREATE TABLE IF NOT EXISTS customers (
                            full_name VARCHAR(150) NOT NULL,
                            phone VARCHAR(20) NOT NULL,
                            email VARCHAR(100),
-                           passport_data VARCHAR(255) NOT NULL,
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO customers(full_name, phone, passport_data) VALUES ('Владислав Поздняков', '1231233245', '1111 222222');
+INSERT INTO customers(full_name, phone) VALUES ('Владислав Поздняков', '1231233245');
 
 -- 3. Таблица: Сектора кладбища
 CREATE TABLE IF NOT EXISTS sectors (
                          id BIGSERIAL PRIMARY KEY,
                          name VARCHAR(100) NOT NULL,
-                         description TEXT,
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO sectors (name, description) VALUES ('1', 'нет');
+INSERT INTO sectors (name) VALUES ('1');
 
 -- 4. Таблица: Места захоронения
 CREATE TABLE IF NOT EXISTS plots (
@@ -62,7 +60,7 @@ CREATE TABLE IF NOT EXISTS employees (
 INSERT INTO employees(full_name, login, password_hash) VALUES ('Гой Гоевич', 'mail@mail.mail', 'password');
 
 -- 6. Таблица: Заявки (содержит данные об умершем)
-CREATE TABLE IF NOT EXISTS burial_requests (
+CREATE TABLE IF NOT EXISTS requests (
                                  id BIGSERIAL PRIMARY KEY,
 
     -- Внешние ключи
@@ -81,13 +79,14 @@ CREATE TABLE IF NOT EXISTS burial_requests (
                                  request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                  processed_date TIMESTAMP,
                                  total_cost DECIMAL(10, 2) DEFAULT 0.00,
-                                 notes TEXT
+                                 notes TEXT,
+                                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 7. Индексы для ускорения работы приложения
 -- Поиск свободных мест будет очень частым
 CREATE INDEX IF NOT EXISTS idx_plots_status_sector ON plots(sector_id, status);
 -- Поиск заявок по статусу (для панели администратора)
-CREATE INDEX IF NOT EXISTS idx_requests_status ON burial_requests(status);
+CREATE INDEX IF NOT EXISTS idx_requests_status ON requests(status);
 -- Поиск всех заявок конкретного клиента (для личного кабинета)
-CREATE INDEX IF NOT EXISTS idx_requests_customer ON burial_requests(customer_id);
+CREATE INDEX IF NOT EXISTS idx_requests_customer ON requests(customer_id);

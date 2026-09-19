@@ -22,6 +22,7 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
                 rs.getInt("id"),
                 rs.getString("full_name"),
                 Role.fromString(rs.getString("role")),
+                rs.getString("login"),
                 rs.getString("password_hash"),
                 rs.getBoolean("is_active"),
                 rs.getObject("created_at", LocalDateTime.class)
@@ -29,9 +30,9 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
     }
     @Override
     public Optional<Employee> get(int id) {
-        String sql = "SELECT id, full_name, role," +
+        String sql = "SELECT id, full_name, role, login," +
                 " password_hash, is_active, created_at" +
-                " FROM employee WHERE id = ?";
+                " FROM employees WHERE id = ?";
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
@@ -51,9 +52,9 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
 
     @Override
     public Collection<Employee> getAll() {
-        String sql = "SELECT id, full_name, role," +
-                "password_hash, is_active, created_at " +
-                "FROM employee";
+        String sql = "SELECT id, full_name, role, login," +
+                " password_hash, is_active, created_at" +
+                " FROM employees";
         List<Employee> list = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -72,16 +73,17 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
 
     @Override
     public void save(Employee value) {
-        String sql = "INSERT INTO employee(full_name, role, password_hash, " +
-                "is_active, created_at) VALUES(?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO employees(full_name, role, login, password_hash, " +
+                "is_active, created_at) VALUES(?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setString(1, value.fullName());
-            stmt.setString(2, value.role().toString());
-            stmt.setString(3, value.passwordHash());
-            stmt.setBoolean(4, value.isActive());
-            stmt.setTimestamp(5, Timestamp.valueOf(value.createdAt()));
+            stmt.setObject(2, value.role().toString(), Types.OTHER);
+            stmt.setString(3, value.login());
+            stmt.setString(4, value.passwordHash());
+            stmt.setBoolean(5, value.isActive());
+            stmt.setTimestamp(6, Timestamp.valueOf(value.createdAt()));
             stmt.executeUpdate();
         }
         catch (SQLException e){

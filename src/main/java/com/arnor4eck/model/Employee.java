@@ -8,6 +8,7 @@ public record Employee (
         int id,
         String fullName,
         Role role,
+        String login,
         String passwordHash,
         boolean isActive,
         LocalDateTime createdAt
