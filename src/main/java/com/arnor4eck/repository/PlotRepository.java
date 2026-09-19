@@ -1,38 +1,39 @@
 package com.arnor4eck.repository;
 
-import com.arnor4eck.model.Employee;
-import com.arnor4eck.util.enums.Role;
+import com.arnor4eck.model.Plot;
+import com.arnor4eck.util.enums.PlotStatus;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
-
-    public EmployeeRepository(DataSource dataSource) {
+public class PlotRepository extends AbstractJDBCRepository<Plot> {
+    public PlotRepository(DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
-    protected Employee mapRow(ResultSet rs) throws SQLException {
-        return new Employee(
+    protected Plot mapRow(ResultSet rs) throws SQLException {
+        return new Plot(
                 rs.getInt("id"),
-                rs.getString("full_name"),
-                Role.fromString(rs.getString("role")),
-                rs.getString("password_hash"),
-                rs.getBoolean("is_active"),
-                rs.getObject("created_at", LocalDateTime.class)
+                rs.getInt("sector_id"),
+                rs.getInt("row_number"),
+                rs.getInt("plot_number"),
+                PlotStatus.fromString(rs.getString("plot_status")),
+                rs.getFloat("length_cm"),
+                rs.getFloat("width_сm"),
+                rs.getString("coordinates")
         );
     }
     @Override
-    public Optional<Employee> get(int id) {
-        String sql = "SELECT id, full_name, role," +
-                " password_hash, is_active, created_at" +
-                " FROM employee WHERE id = ?";
+    public Optional<Plot> get(int id) {
+        String sql = "SELECT id, sector_id, row_number," +
+                " plot_number, plot_status, length_cm, " +
+                "width_sm, coordinates" +
+                " FROM plots WHERE id = ?";
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
@@ -51,11 +52,12 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
     }
 
     @Override
-    public Collection<Employee> getAll() {
-        String sql = "SELECT id, full_name, role," +
-                "password_hash, is_active, created_at " +
-                "FROM employee";
-        List<Employee> list = new ArrayList<>();
+    public Collection<Plot> getAll() {
+        String sql = "SELECT id, sector_id, row_number," +
+                " plot_number, plot_status, length_cm, " +
+                "width_cm, coordinates " +
+                "FROM plots";
+        List<Plot> list = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()){
@@ -72,17 +74,22 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
     }
 
     @Override
-    public void save(Employee value) {
-        String sql = "INSERT INTO employee(full_name, role, password_hash, " +
-                "is_active, created_at) VALUES(?, ?, ?, ?, ?);";
+    public void save(Plot value) {
+        String sql =
+                "INSERT INTO plots(sector_id, row_number, " +
+                        "plot_number, plot_status, length_cm, " +
+                "width_cm, coordinaties) " +
+                "VALUES(?, ?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
-            stmt.setString(1, value.fullName());
-            stmt.setString(2, value.role().toString());
-            stmt.setString(3, value.passwordHash());
-            stmt.setBoolean(4, value.isActive());
-            stmt.setTimestamp(5, Timestamp.valueOf(value.createdAt()));
+            stmt.setInt(1, value.sectorId());
+            stmt.setInt(2, value.rowNumber());
+            stmt.setInt(3, value.plotNumber());
+            stmt.setString(4, value.status().toString());
+            stmt.setFloat(5, value.lengthCm());
+            stmt.setFloat(6, value.widthCm());
+            stmt.setString(7, value.coordinates());
             stmt.executeUpdate();
         }
         catch (SQLException e){
@@ -91,10 +98,9 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
             ));
         }
     }
-
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM employees WHERE id = ?";
+        String sql = "DELETE FROM plots WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
@@ -107,4 +113,6 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
         }
 
     }
+
+
 }

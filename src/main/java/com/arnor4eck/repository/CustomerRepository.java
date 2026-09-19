@@ -1,7 +1,6 @@
 package com.arnor4eck.repository;
 
-import com.arnor4eck.model.Employee;
-import com.arnor4eck.util.enums.Role;
+import com.arnor4eck.model.Customer;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -11,28 +10,26 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
-
-    public EmployeeRepository(DataSource dataSource) {
+public class CustomerRepository extends AbstractJDBCRepository<Customer> {
+    public CustomerRepository(DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
-    protected Employee mapRow(ResultSet rs) throws SQLException {
-        return new Employee(
+    protected Customer mapRow(ResultSet rs) throws SQLException {
+        return new Customer(
                 rs.getInt("id"),
                 rs.getString("full_name"),
-                Role.fromString(rs.getString("role")),
-                rs.getString("password_hash"),
-                rs.getBoolean("is_active"),
+                rs.getString("phone"),
+                rs.getString("email"),
                 rs.getObject("created_at", LocalDateTime.class)
         );
     }
     @Override
-    public Optional<Employee> get(int id) {
-        String sql = "SELECT id, full_name, role," +
-                " password_hash, is_active, created_at" +
-                " FROM employee WHERE id = ?";
+    public Optional<Customer> get(int id) {
+        String sql = "SELECT id, full_name, phone," +
+                " email, created_at" +
+                " FROM customers WHERE id = ?";
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
@@ -51,11 +48,11 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
     }
 
     @Override
-    public Collection<Employee> getAll() {
-        String sql = "SELECT id, full_name, role," +
-                "password_hash, is_active, created_at " +
-                "FROM employee";
-        List<Employee> list = new ArrayList<>();
+    public Collection<Customer> getAll() {
+        String sql = "SELECT id, full_name, phone," +
+                "email, created_at " +
+                "FROM customers";
+        List<Customer> list = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()){
@@ -72,17 +69,17 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
     }
 
     @Override
-    public void save(Employee value) {
-        String sql = "INSERT INTO employee(full_name, role, password_hash, " +
-                "is_active, created_at) VALUES(?, ?, ?, ?, ?);";
+    public void save(Customer value) {
+        String sql =
+                "INSERT INTO customers(full_name, phone, email, created_at)" +
+                        " VALUES(?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setString(1, value.fullName());
-            stmt.setString(2, value.role().toString());
-            stmt.setString(3, value.passwordHash());
-            stmt.setBoolean(4, value.isActive());
-            stmt.setTimestamp(5, Timestamp.valueOf(value.createdAt()));
+            stmt.setString(2, value.phone());
+            stmt.setString(3, value.email());
+            stmt.setTimestamp(4, Timestamp.valueOf(value.createdAt()));
             stmt.executeUpdate();
         }
         catch (SQLException e){
@@ -91,10 +88,9 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
             ));
         }
     }
-
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM employees WHERE id = ?";
+        String sql = "DELETE FROM customers WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
@@ -107,4 +103,6 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
         }
 
     }
+
+
 }
