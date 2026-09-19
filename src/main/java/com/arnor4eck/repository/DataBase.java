@@ -16,12 +16,14 @@ public class DataBase {
     private final DataSource dataSource;
 
 
-    public DataBase() throws SQLException {
+    public DataBase() {
         try {
             this.dataSource = initDataSource();
             initDb();
-        } catch (Exception e) {
-            throw new SQLException("Init db error", e.getMessage());
+        } catch (SQLException | IOException e) {
+            System.out.printf("Не удалось присоединиться к базе данных: %s", e.getMessage());
+            System.exit(1);
+            throw new RuntimeException(e);
         }
     }
 

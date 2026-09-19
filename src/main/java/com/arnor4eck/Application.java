@@ -1,6 +1,7 @@
 package com.arnor4eck;
 
 import com.arnor4eck.repository.DataBase;
+import com.arnor4eck.repository.PlotRepository;
 import com.arnor4eck.repository.RequestRepository;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
@@ -31,7 +32,8 @@ public final class Application {
                 MENU_UNITS
         );
         var dataSource = new DataBase();
-        var requestRepository = new RequestRepository();
+        var requestRepository = new RequestRepository(dataSource);
+        var plotRepository = new PlotRepository(dataSource);
 
         this.mainMenu = new DataExportStrategy(
             List.of(
@@ -39,13 +41,23 @@ public final class Application {
                         "========= ЗАЯВКИ =========",
                         scanner,
                         List.of("Все заявки", "Конкретная заявка (id)", "Фильтрация по статусу заявки", "Статистика"),
-                        List.of(new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy())
+                        List.of(
+                            OutputStrategyFactory.allValues(requestRepository),
+                            OutputStrategyFactory.concreteValue(requestRepository, scanner),
+                            new NotExistingStrategy(),
+                            new NotExistingStrategy()
+                        )
                 ),
                 OutputStrategyFactory.menuProvider(
                         "========= МЕСТА НА КЛАДБИЩЕ =========",
                         scanner,
                         List.of("Все места", "Конкретное место (id)", "Фильтрация по статусу места", "Фильтрация по сектору"),
-                        List.of(new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy())
+                        List.of(
+                            OutputStrategyFactory.allValues(plotRepository),
+                            OutputStrategyFactory.concreteValue(plotRepository, scanner),
+                            new NotExistingStrategy(),
+                            new NotExistingStrategy()
+                        )
                 ),
                 OutputStrategyFactory.menuProvider(
                         "========= ЭКСПОРТ ДАННЫХ =========",
