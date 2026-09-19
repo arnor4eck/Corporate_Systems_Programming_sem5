@@ -23,7 +23,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
                 rs.getInt("plot_number"),
                 PlotStatus.fromString(rs.getString("status")),
                 rs.getFloat("length_cm"),
-                rs.getFloat("width_сm"),
+                rs.getFloat("width_cm"),
                 rs.getString("coordinates")
         );
     }
