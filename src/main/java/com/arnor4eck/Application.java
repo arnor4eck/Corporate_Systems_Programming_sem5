@@ -1,5 +1,7 @@
 package com.arnor4eck;
 
+import com.arnor4eck.model.Plot;
+import com.arnor4eck.model.Request;
 import com.arnor4eck.repository.DataBase;
 import com.arnor4eck.repository.PlotRepository;
 import com.arnor4eck.repository.RequestRepository;
@@ -8,7 +10,9 @@ import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
 import com.arnor4eck.service.outputstrategy.concrete.CreatePlotOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.SortOutputStrategy;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,10 +44,11 @@ public final class Application {
                 OutputStrategyFactory.menuProvider(
                         "========= ЗАЯВКИ =========",
                         scanner,
-                        List.of("Все заявки", "Конкретная заявка (id)", "Фильтрация по статусу заявки", "Статистика"),
+                        List.of("Все заявки", "Конкретная заявка (id)", "Сортировка по дате создания", "Фильтрация по статусу заявки", "Статистика"),
                         List.of(
                             OutputStrategyFactory.allValues(requestRepository),
                             OutputStrategyFactory.concreteValue(requestRepository, scanner),
+                            OutputStrategyFactory.sort(requestRepository, Comparator.comparing(Request::createdAt).reversed()),
                             new NotExistingStrategy(),
                             new NotExistingStrategy()
                         )
@@ -51,11 +56,11 @@ public final class Application {
                 OutputStrategyFactory.menuProvider(
                         "========= МЕСТА НА КЛАДБИЩЕ =========",
                         scanner,
-                        List.of("Все места", "Конкретное место (id)", "Фильтрация по статусу места", "Фильтрация по сектору", "Создать место"),
+                        List.of("Все места", "Конкретное место (id)", "Сортировка по статусу", "Фильтрация по сектору", "Создать место"),
                         List.of(
                             OutputStrategyFactory.allValues(plotRepository),
                             OutputStrategyFactory.concreteValue(plotRepository, scanner),
-                            new NotExistingStrategy(),
+                            OutputStrategyFactory.sort(plotRepository, Comparator.comparing(Plot::status)),
                             new NotExistingStrategy(),
                             new CreatePlotOutputStrategy(plotRepository, scanner)
                         )

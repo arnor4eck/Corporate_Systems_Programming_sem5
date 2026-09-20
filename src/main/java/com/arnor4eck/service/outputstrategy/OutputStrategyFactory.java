@@ -4,7 +4,9 @@ import com.arnor4eck.repository.Repository;
 import com.arnor4eck.service.outputstrategy.concrete.AllValuesOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.ConcreteValueOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.MenuProviderOutputStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.SortOutputStrategy;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,5 +34,12 @@ public class OutputStrategyFactory {
             List<? extends OutputStrategy> strategies
     ) {
         return new MenuProviderOutputStrategy(topic, scanner, units, strategies);
+    }
+
+    public static <T> SortOutputStrategy<T> sort(
+            Repository<T> repository,
+            Comparator<T> comparator
+    ) {
+        return new SortOutputStrategy<>(repository, comparator);
     }
 }
