@@ -14,7 +14,6 @@ public class CreatePlotOutputStrategy extends CreateValueOutputStrategy<Plot>{
     @Override
     public String act() {
         try {
-            int id = enterPositiveInteger("id");
             int sectorId = enterPositiveInteger("id сектора");
             int rowNumber = enterPositiveInteger("номер ряда");
             int plotNumber = enterPositiveInteger("номер места");
@@ -24,7 +23,7 @@ public class CreatePlotOutputStrategy extends CreateValueOutputStrategy<Plot>{
             String coords = enterCoords();
 
             var value = new Plot(
-                id, sectorId, rowNumber, plotNumber, plotStatus, length, width, coords
+                0, sectorId, rowNumber, plotNumber, plotStatus, length, width, coords
             );
 
             repository.save(value);
