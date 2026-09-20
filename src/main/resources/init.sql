@@ -46,6 +46,10 @@ CREATE TABLE IF NOT EXISTS plots (
                        UNIQUE (sector_id, row_number, plot_number) -- Защита от дублей мест
 );
 
+INSERT INTO plots(sector_id, row_number, plot_number, coordinates, status) VALUES (1, 2, 1, '55.7558, 37.6173', 'RESERVED');
+INSERT INTO plots(sector_id, row_number, plot_number, coordinates) VALUES (1, 1, 1, '55.7558, 37.6173');
+INSERT INTO plots(sector_id, row_number, plot_number, coordinates, status) VALUES (1, 3, 1, '55.7558, 37.6173', 'RESERVED');
+
 -- 5. Таблица: Сотрудники
 CREATE TABLE IF NOT EXISTS employees (
                            id BIGSERIAL PRIMARY KEY,
@@ -82,6 +86,9 @@ CREATE TABLE IF NOT EXISTS requests (
                                  notes TEXT,
                                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (1, 1, 1, '2020-06-22 19:10:25-07');
+INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (1, 1, 1, '2022-06-22 19:10:25-07');
 
 -- 7. Индексы для ускорения работы приложения
 -- Поиск свободных мест будет очень частым

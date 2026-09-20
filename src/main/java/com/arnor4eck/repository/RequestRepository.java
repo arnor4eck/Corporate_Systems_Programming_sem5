@@ -28,7 +28,7 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
                 rs.getObject("deceased_death_date", LocalDate.class),
                 rs.getString("deceased_certificate"),
                 RequestStatus.fromString(rs.getString("status")),
-                rs.getString("totalCost"),
+                rs.getString("total_cost"),
                 rs.getString("notes"),
                 rs.getObject("created_at", LocalDateTime.class)
         );
@@ -61,7 +61,7 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
     public Collection<Request> getAll() {
         String sql = "SELECT id, customer_id, employee_id," +
                 " plot_id, deceased_full_name, " +
-                "deceased_birth_date, deceased_death_date, deceased_certificate " +
+                "deceased_birth_date, deceased_death_date, deceased_certificate, " +
                 "status, total_cost, notes, created_at " +
                 "FROM requests";
         List<Request> list = new ArrayList<>();
@@ -85,7 +85,7 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
         String sql =
                 "INSERT INTO requests(id, customer_id, employee_id," +
                 " plot_id, deceased_full_name, deceased_birthday " +
-                "deceased_birth_date, deceased_death_date, deceased_certificate " +
+                "deceased_birth_date, deceased_death_date, deceased_certificate, " +
                 "status, total_cost, notes, created_at " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
