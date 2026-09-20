@@ -34,7 +34,7 @@ public class ConcreteValueOutputStrategyTest {
     @DisplayName("При вводе конкретного id, должна возращаться сущность, преобразованная в строку")
     public void testFindById() {
         int expectedId = 1;
-        Employee employee = new Employee(expectedId, "name", Role.ADMIN, "password", true, LocalDateTime.now());
+        Employee employee = new Employee(expectedId, "name", Role.ADMIN, "password", "password", true, LocalDateTime.now());
 
         when(scanner.nextInt()).thenReturn(expectedId);
         when(repository.get(eq(expectedId))).thenReturn(Optional.of(employee));

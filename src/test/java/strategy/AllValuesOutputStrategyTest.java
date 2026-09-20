@@ -46,7 +46,7 @@ public class AllValuesOutputStrategyTest {
 
     private Employee createEmployee(int id) {
         return new Employee(id, String.valueOf(id),
-                Role.ADMIN, String.valueOf(id),
+                Role.ADMIN, String.valueOf(id), String.valueOf(id),
                 true, LocalDateTime.now());
     }
 }
