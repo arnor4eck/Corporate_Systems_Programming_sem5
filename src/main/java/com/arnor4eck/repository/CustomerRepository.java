@@ -75,7 +75,6 @@ public class CustomerRepository extends AbstractJDBCRepository<Customer> {
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
-            System.out.println(conn.getAutoCommit());
             stmt.setString(1, value.fullName());
             stmt.setString(2, value.phone());
             stmt.setString(3, value.email());

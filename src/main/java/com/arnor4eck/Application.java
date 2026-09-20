@@ -2,12 +2,14 @@ package com.arnor4eck;
 
 import com.arnor4eck.model.Plot;
 import com.arnor4eck.model.Request;
+import com.arnor4eck.repository.CustomerRepository;
 import com.arnor4eck.repository.DataBase;
 import com.arnor4eck.repository.PlotRepository;
 import com.arnor4eck.repository.RequestRepository;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
+import com.arnor4eck.service.outputstrategy.concrete.CreateCustomerOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.CreatePlotOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.SortOutputStrategy;
@@ -22,7 +24,7 @@ public final class Application {
     private final DataExportStrategy mainMenu;
 
     private static final String EXIT = "Выход";
-    private static final List<String> MENU_UNITS = List.of("Заявки", "Места на кладбище", "Экспорт данных", EXIT);
+    private static final List<String> MENU_UNITS = List.of("Заявители", "Заявки", "Места на кладбище", "Экспорт данных", EXIT);
     private static final int EXIT_CONDITION;
 
     static {
@@ -38,9 +40,20 @@ public final class Application {
         var dataSource = new DataBase();
         var requestRepository = new RequestRepository(dataSource);
         var plotRepository = new PlotRepository(dataSource);
+        var customerRepository = new CustomerRepository(dataSource);
 
         this.mainMenu = new DataExportStrategy(
             List.of(
+                OutputStrategyFactory.menuProvider(
+                        "========= ЗАЯВИТЕЛИ =========",
+                        scanner,
+                        List.of("Все заявители", "Конкретный заявитель (id)", "Создать заявителя"),
+                        List.of(
+                                OutputStrategyFactory.allValues(customerRepository),
+                                OutputStrategyFactory.concreteValue(customerRepository, scanner),
+                                new CreateCustomerOutputStrategy(customerRepository, scanner)
+                        )
+                ),
                 OutputStrategyFactory.menuProvider(
                         "========= ЗАЯВКИ =========",
                         scanner,
