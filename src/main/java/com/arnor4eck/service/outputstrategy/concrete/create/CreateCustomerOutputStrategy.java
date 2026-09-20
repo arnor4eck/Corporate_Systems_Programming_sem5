@@ -1,4 +1,4 @@
-package com.arnor4eck.service.outputstrategy.concrete;
+package com.arnor4eck.service.outputstrategy.concrete.create;
 
 import com.arnor4eck.model.Customer;
 import com.arnor4eck.repository.Repository;

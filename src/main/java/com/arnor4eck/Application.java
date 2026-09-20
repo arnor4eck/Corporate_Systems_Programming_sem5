@@ -9,10 +9,12 @@ import com.arnor4eck.repository.RequestRepository;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
-import com.arnor4eck.service.outputstrategy.concrete.CreateCustomerOutputStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.CreatePlotOutputStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.create.CreateCustomerOutputStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.create.CreatePlotOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.SortOutputStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByFullNameFilterStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByPhoneFilterStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.filter.PlotByStatusFilterStrategy;
 
 import java.util.Comparator;
 import java.util.List;
@@ -47,34 +49,35 @@ public final class Application {
                 OutputStrategyFactory.menuProvider(
                         "========= ЗАЯВИТЕЛИ =========",
                         scanner,
-                        List.of("Все заявители", "Конкретный заявитель (id)", "Создать заявителя"),
+                        List.of("Все заявители", "Конкретный заявитель (id)",
+                                "Поиск по содержанию текста в ФИО", "Поиск по номеру телефона", "Создать заявителя"),
                         List.of(
                                 OutputStrategyFactory.allValues(customerRepository),
                                 OutputStrategyFactory.concreteValue(customerRepository, scanner),
+                                new CustomerByFullNameFilterStrategy(customerRepository, scanner),
+                                new CustomerByPhoneFilterStrategy(customerRepository, scanner),
                                 new CreateCustomerOutputStrategy(customerRepository, scanner)
                         )
                 ),
                 OutputStrategyFactory.menuProvider(
                         "========= ЗАЯВКИ =========",
                         scanner,
-                        List.of("Все заявки", "Конкретная заявка (id)", "Сортировка по дате создания", "Фильтрация по статусу заявки", "Статистика"),
+                        List.of("Все заявки", "Конкретная заявка (id)", "Сортировка по дате создания"),
                         List.of(
                             OutputStrategyFactory.allValues(requestRepository),
                             OutputStrategyFactory.concreteValue(requestRepository, scanner),
-                            OutputStrategyFactory.sort(requestRepository, Comparator.comparing(Request::createdAt).reversed()),
-                            new NotExistingStrategy(),
-                            new NotExistingStrategy()
+                            OutputStrategyFactory.sort(requestRepository, Comparator.comparing(Request::createdAt).reversed())
                         )
                 ),
                 OutputStrategyFactory.menuProvider(
                         "========= МЕСТА НА КЛАДБИЩЕ =========",
                         scanner,
-                        List.of("Все места", "Конкретное место (id)", "Сортировка по статусу", "Фильтрация по сектору", "Создать место"),
+                        List.of("Все места", "Конкретное место (id)", "Сортировка по статусу", "Фильтрация по статусу", "Создать место"),
                         List.of(
                             OutputStrategyFactory.allValues(plotRepository),
                             OutputStrategyFactory.concreteValue(plotRepository, scanner),
                             OutputStrategyFactory.sort(plotRepository, Comparator.comparing(Plot::status)),
-                            new NotExistingStrategy(),
+                            new PlotByStatusFilterStrategy(plotRepository, scanner),
                             new CreatePlotOutputStrategy(plotRepository, scanner)
                         )
                 ),
