@@ -15,6 +15,7 @@ import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByFullNameFilterStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByPhoneFilterStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.PlotByStatusFilterStrategy;
+import com.arnor4eck.util.OutputStrategyPair;
 
 import java.util.Comparator;
 import java.util.List;
@@ -49,43 +50,40 @@ public final class Application {
                 OutputStrategyFactory.menuProvider(
                         "========= ЗАЯВИТЕЛИ =========",
                         scanner,
-                        List.of("Все заявители", "Конкретный заявитель (id)",
-                                "Поиск по содержанию текста в ФИО", "Поиск по номеру телефона", "Создать заявителя"),
                         List.of(
-                                OutputStrategyFactory.allValues(customerRepository),
-                                OutputStrategyFactory.concreteValue(customerRepository, scanner),
-                                new CustomerByFullNameFilterStrategy(customerRepository, scanner),
-                                new CustomerByPhoneFilterStrategy(customerRepository, scanner),
-                                new CreateCustomerOutputStrategy(customerRepository, scanner)
+                            OutputStrategyPair.of("Все заявители", OutputStrategyFactory.allValues(customerRepository)),
+                            OutputStrategyPair.of("Конкретный заявитель (id)", OutputStrategyFactory.concreteValue(customerRepository, scanner)),
+                            OutputStrategyPair.of("Поиск по содержанию текста в ФИО", new CustomerByFullNameFilterStrategy(customerRepository, scanner)),
+                            OutputStrategyPair.of("Поиск по номеру телефона", new CustomerByPhoneFilterStrategy(customerRepository, scanner)),
+                            OutputStrategyPair.of("Создать заявителя", new CreateCustomerOutputStrategy(customerRepository, scanner))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(
                         "========= ЗАЯВКИ =========",
                         scanner,
-                        List.of("Все заявки", "Конкретная заявка (id)", "Сортировка по дате создания"),
                         List.of(
-                            OutputStrategyFactory.allValues(requestRepository),
-                            OutputStrategyFactory.concreteValue(requestRepository, scanner),
-                            OutputStrategyFactory.sort(requestRepository, Comparator.comparing(Request::createdAt).reversed())
+                            OutputStrategyPair.of("Все заявки", OutputStrategyFactory.allValues(requestRepository)),
+                            OutputStrategyPair.of("Конкретная заявка (id)", OutputStrategyFactory.concreteValue(requestRepository, scanner)),
+                            OutputStrategyPair.of("Сортировка по дате создания", OutputStrategyFactory.sort(requestRepository, Comparator.comparing(Request::createdAt).reversed()))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(
                         "========= МЕСТА НА КЛАДБИЩЕ =========",
                         scanner,
-                        List.of("Все места", "Конкретное место (id)", "Сортировка по статусу", "Фильтрация по статусу", "Создать место"),
                         List.of(
-                            OutputStrategyFactory.allValues(plotRepository),
-                            OutputStrategyFactory.concreteValue(plotRepository, scanner),
-                            OutputStrategyFactory.sort(plotRepository, Comparator.comparing(Plot::status)),
-                            new PlotByStatusFilterStrategy(plotRepository, scanner),
-                            new CreatePlotOutputStrategy(plotRepository, scanner)
+                            OutputStrategyPair.of("Все места", OutputStrategyFactory.allValues(plotRepository)),
+                            OutputStrategyPair.of("Конкретное место (id)", OutputStrategyFactory.concreteValue(plotRepository, scanner)),
+                            OutputStrategyPair.of("Сортировка по статусу", OutputStrategyFactory.sort(plotRepository, Comparator.comparing(Plot::status))),
+                            OutputStrategyPair.of("Фильтрация по статусу", new PlotByStatusFilterStrategy(plotRepository, scanner)),
+                            OutputStrategyPair.of("Создать место", new CreatePlotOutputStrategy(plotRepository, scanner))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         scanner,
-                        List.of("Общий экспорт", "Экспорт заявок", "Экспорт мест"),
-                        List.of(new NotExistingStrategy(), new NotExistingStrategy(), new NotExistingStrategy())
+                        List.of(
+                            OutputStrategyPair.of("Общий экспорт", new NotExistingStrategy())
+                        )
                 )
             )
         );

@@ -5,6 +5,7 @@ import com.arnor4eck.service.outputstrategy.concrete.AllValuesOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.ConcreteValueOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.MenuProviderOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.SortOutputStrategy;
+import com.arnor4eck.util.OutputStrategyPair;
 
 import java.util.Comparator;
 import java.util.List;
@@ -30,10 +31,9 @@ public class OutputStrategyFactory {
     public static MenuProviderOutputStrategy menuProvider(
             String topic,
             Scanner scanner,
-            List<String> units,
-            List<? extends OutputStrategy> strategies
+            List<OutputStrategyPair<?>> pairs
     ) {
-        return new MenuProviderOutputStrategy(topic, scanner, units, strategies);
+        return new MenuProviderOutputStrategy(topic, scanner, pairs);
     }
 
     public static <T> SortOutputStrategy<T> sort(
