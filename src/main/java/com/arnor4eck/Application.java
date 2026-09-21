@@ -16,6 +16,7 @@ import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByFullNameFilterStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByPhoneFilterStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.PlotByStatusFilterStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.xlsx.XlsxOutputStrategy;
 import com.arnor4eck.util.OutputStrategyPair;
 
 import java.util.Comparator;
@@ -79,7 +80,7 @@ public final class Application {
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         scanner,
                         List.of(
-                            OutputStrategyPair.of("Общий экспорт", new NotExistingStrategy())
+                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(plotRepository))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(

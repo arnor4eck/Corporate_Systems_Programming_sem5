@@ -12,6 +12,7 @@ repositories {
 dependencies {
     implementation 'io.github.cdimascio:dotenv-java:3.2.0'
     implementation 'org.postgresql:postgresql:42.7.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.5'
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
