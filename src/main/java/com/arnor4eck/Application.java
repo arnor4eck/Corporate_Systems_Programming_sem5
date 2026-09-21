@@ -10,7 +10,6 @@ import com.arnor4eck.service.outputstrategy.concrete.StatisticsOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreateCustomerOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreateEmployeeOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreatePlotOutputStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.*;
 import com.arnor4eck.service.outputstrategy.concrete.xlsx.XlsxOutputStrategy;
 import com.arnor4eck.util.OutputStrategyPair;
@@ -75,32 +74,30 @@ public final class Application {
                             OutputStrategyPair.of("Создать место", new CreatePlotOutputStrategy(plotRepository, scanner))
                         )
                 ),
-                    factory.menuProvider(
-                            "========= СОТРУДНИКИ =========",
-                            List.of(
-                                    OutputStrategyPair.of("Все сотрудники", OutputStrategyFactory.allValues(employeeRepository)),
-                                    OutputStrategyPair.of("Конретный сотрудник (id)", factory.concreteValue(employeeRepository)),
-                                    OutputStrategyPair.of("Поиск по содержанию текста в ФИО", new EmployeeByFullNameFilterStrategy(employeeRepository, scanner)),
-                                    OutputStrategyPair.of("Поиск по логину", new EmployeeByLoginFilterStrategy(employeeRepository, scanner)),
-                                    OutputStrategyPair.of("Создать сотрудника", new CreateEmployeeOutputStrategy(employeeRepository, scanner))
+                factory.menuProvider(
+                        "========= СОТРУДНИКИ =========",
+                        List.of(
+                            OutputStrategyPair.of("Все сотрудники", OutputStrategyFactory.allValues(employeeRepository)),
+                            OutputStrategyPair.of("Конретный сотрудник (id)", factory.concreteValue(employeeRepository)), OutputStrategyPair.of("Поиск по содержанию текста в ФИО", new EmployeeByFullNameFilterStrategy(employeeRepository, scanner)),
+                            OutputStrategyPair.of("Поиск по логину", new EmployeeByLoginFilterStrategy(employeeRepository, scanner)),
+                            OutputStrategyPair.of("Создать сотрудника", new CreateEmployeeOutputStrategy(employeeRepository, scanner))
                             )
                     ),
                 factory.menuProvider(
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(
-                                List.of(
-                                        XlsxOutputStrategy.XlsxPair.of("Места", plotRepository),
-                                        XlsxOutputStrategy.XlsxPair.of("Запросы", requestRepository),
-                                        XlsxOutputStrategy.XlsxPair.of("Клиенты", customerRepository),
-                                        XlsxOutputStrategy.XlsxPair.of("Сектора", sectorRepository),
-                                        XlsxOutputStrategy.XlsxPair.of("Сотрудники", employeeRepository)
+                            List.of(
+                                XlsxOutputStrategy.XlsxPair.of("Места", plotRepository),
+                                XlsxOutputStrategy.XlsxPair.of("Запросы", requestRepository),
+                                XlsxOutputStrategy.XlsxPair.of("Клиенты", customerRepository),
+                                XlsxOutputStrategy.XlsxPair.of("Сектора", sectorRepository), XlsxOutputStrategy.XlsxPair.of("Сотрудники", employeeRepository)
                                 )
                         ))
                 ),
-                    factory.menuProvider(
-                            "========= СТАТИСТИКА =========",
-                            OutputStrategyPair.of("Общая статистика", new StatisticsOutputStrategy(plotRepository, requestRepository))
-                    )
+                factory.menuProvider(
+                    "========= СТАТИСТИКА =========",
+                    OutputStrategyPair.of("Общая статистика", new StatisticsOutputStrategy(plotRepository, requestRepository))
+                )
             )
         );
     }
