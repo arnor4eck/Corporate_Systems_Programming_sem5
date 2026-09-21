@@ -80,7 +80,7 @@ public final class Application {
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         scanner,
                         List.of(
-                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(plotRepository))
+                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(plotRepository, requestRepository))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(

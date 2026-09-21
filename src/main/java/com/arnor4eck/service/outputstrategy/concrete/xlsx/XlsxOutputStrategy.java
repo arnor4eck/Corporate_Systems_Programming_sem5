@@ -1,6 +1,7 @@
 package com.arnor4eck.service.outputstrategy.concrete.xlsx;
 
 import com.arnor4eck.model.Plot;
+import com.arnor4eck.model.Request;
 import com.arnor4eck.repository.Repository;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -10,9 +11,14 @@ import java.io.FileOutputStream;
 public class XlsxOutputStrategy implements OutputStrategy {
 
     private final Repository<Plot> plotRepository;
+    private final Repository<Request> requestRepository;
 
-    public XlsxOutputStrategy(Repository<Plot> plotRepository) {
+    public XlsxOutputStrategy(
+            Repository<Plot> plotRepository,
+            Repository<Request> requestRepository
+    ) {
         this.plotRepository = plotRepository;
+        this.requestRepository = requestRepository;
     }
 
     @Override
@@ -31,6 +37,10 @@ public class XlsxOutputStrategy implements OutputStrategy {
                     String.valueOf(plot.widthCm()),
                     plot.coordinates()
             ));
+
+            pojo.addSheet("Заявки",
+                    requestRepository,
+                    Request::toExportString);
 
 
             Workbook workbook = pojo.getWorkbook();

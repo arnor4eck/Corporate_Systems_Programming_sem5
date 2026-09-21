@@ -19,4 +19,25 @@ public record Request(
         String note,
         LocalDateTime createdAt
 ) {
+
+    public String toExportString() {
+        return String.join("; ",
+                String.valueOf(this.id()),
+                String.valueOf(this.costumerId()),
+                String.valueOf(this.employeeId()),
+                String.valueOf(this.plotId()),
+                emptyIfNull(this.deceasedFullName()),
+                emptyIfNull(this.deceasedBirthday()),
+                emptyIfNull(this.deceasedDeathday()),
+                emptyIfNull(this.deceasedCertificate()),
+                this.status().getValue(),
+                this.totalCost(),
+                emptyIfNull(this.note()),
+                this.createdAt().toString()
+        );
+    }
+
+    private String emptyIfNull(Object string) {
+        return string == null ? "" : string.toString();
+    }
 }
