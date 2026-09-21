@@ -9,6 +9,7 @@ import com.arnor4eck.repository.RequestRepository;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
+import com.arnor4eck.service.outputstrategy.concrete.StatisticsOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreateCustomerOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreatePlotOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
@@ -27,12 +28,8 @@ public final class Application {
     private final DataExportStrategy mainMenu;
 
     private static final String EXIT = "Выход";
-    private static final List<String> MENU_UNITS = List.of("Заявители", "Заявки", "Места на кладбище", "Экспорт данных", EXIT);
-    private static final int EXIT_CONDITION;
-
-    static {
-        EXIT_CONDITION = MENU_UNITS.indexOf(EXIT) + 1;
-    }
+    private static final List<String> MENU_UNITS = List.of("Заявители", "Заявки", "Места на кладбище", "Экспорт данных", "Статистика", EXIT);
+    private static final int EXIT_CONDITION = MENU_UNITS.indexOf(EXIT) + 1;
 
     public Application(Scanner scanner) {
         this.menu = new MenuProvider(
@@ -83,6 +80,13 @@ public final class Application {
                         scanner,
                         List.of(
                             OutputStrategyPair.of("Общий экспорт", new NotExistingStrategy())
+                        )
+                ),
+                OutputStrategyFactory.menuProvider(
+                        "========= СТАТИСТИКА =========",
+                        scanner,
+                        List.of(
+                            OutputStrategyPair.of("Общая статистика", new StatisticsOutputStrategy(plotRepository, requestRepository))
                         )
                 )
             )

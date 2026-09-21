@@ -25,7 +25,7 @@ public class MenuProvider {
         return getNumber();
     }
 
-    public void showMenu() {
+    private void showMenu() {
         System.out.println(topic);
         for(int i = 0; i < units.size(); ++i) {
             System.out.printf("\t%d. %s\n", i + 1, units.get(i));
