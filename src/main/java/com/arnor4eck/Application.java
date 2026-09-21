@@ -9,7 +9,6 @@ import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
 import com.arnor4eck.service.outputstrategy.concrete.StatisticsOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreateCustomerOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreatePlotOutputStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByFullNameFilterStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByPhoneFilterStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.PlotByStatusFilterStrategy;
@@ -79,7 +78,15 @@ public final class Application {
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         scanner,
                         List.of(
-                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(plotRepository, requestRepository, customerRepository, sectorRepository, employeeRepository))
+                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(
+                                    List.of(
+                                            XlsxOutputStrategy.XlsxPair.of("Места", plotRepository),
+                                            XlsxOutputStrategy.XlsxPair.of("Запросы", requestRepository),
+                                            XlsxOutputStrategy.XlsxPair.of("Клиенты", customerRepository),
+                                            XlsxOutputStrategy.XlsxPair.of("Сектора", sectorRepository),
+                                            XlsxOutputStrategy.XlsxPair.of("Сотрудники", employeeRepository)
+                                    )
+                            ))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(

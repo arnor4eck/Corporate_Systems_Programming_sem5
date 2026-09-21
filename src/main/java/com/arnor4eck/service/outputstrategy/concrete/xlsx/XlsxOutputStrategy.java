@@ -6,27 +6,15 @@ import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.FileOutputStream;
+import java.util.List;
 
 public class XlsxOutputStrategy implements OutputStrategy {
-
-    private final Repository<Plot> plotRepository;
-    private final Repository<Request> requestRepository;
-    private final Repository<Customer> customerRepository;
-    private final Repository<Sector> sectorRepository;
-    private final Repository<Employee> employeeRepository;
+    private final List<XlsxPair<?>> xlsxPairList;
 
     public XlsxOutputStrategy(
-            Repository<Plot> plotRepository,
-            Repository<Request> requestRepository,
-            Repository<Customer> customerRepository,
-            Repository<Sector> sectorRepository,
-            Repository<Employee> employeeRepository
+            List<XlsxPair<?>> xlsxPairList
     ) {
-        this.plotRepository = plotRepository;
-        this.requestRepository = requestRepository;
-        this.customerRepository = customerRepository;
-        this.sectorRepository = sectorRepository;
-        this.employeeRepository = employeeRepository;
+        this.xlsxPairList = xlsxPairList;
     }
 
     @Override
@@ -35,22 +23,12 @@ public class XlsxOutputStrategy implements OutputStrategy {
 
         try (FileOutputStream fos = new FileOutputStream(fileName)) {
             XlsxPojo pojo = new XlsxPojo();
-            pojo.addSheet("Места",
-                    plotRepository,
-                    Plot::toExportString);
 
-            pojo.addSheet("Заявки",
-                    requestRepository,
-                    Request::toExportString);
-            pojo.addSheet("Клиенты",
-                    customerRepository,
-                    Customer::toExportString);
-            pojo.addSheet("Сектора",
-                    sectorRepository,
-                    Sector::toExportString);
-            pojo.addSheet("Работники",
-                    employeeRepository,
-                    Employee::toExportString);
+            for (var pair : xlsxPairList) {
+                pojo.addSheet(pair.sheetName(),
+                        pair.repository(),
+                        ExportModel::toExportString);
+            }
 
 
             Workbook workbook = pojo.getWorkbook();
@@ -61,5 +39,11 @@ public class XlsxOutputStrategy implements OutputStrategy {
         }
 
         return String.format("Файл созранен как %s", fileName);
+    }
+
+    public record XlsxPair<T extends ExportModel>(String sheetName, Repository<T> repository) {
+        public static <R extends ExportModel> XlsxPair<R> of(String sheetName, Repository<R> repository) {
+            return new XlsxPair<>(sheetName, repository);
+        }
     }
 }
