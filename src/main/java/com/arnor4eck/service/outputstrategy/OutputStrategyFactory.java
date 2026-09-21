@@ -7,9 +7,9 @@ import com.arnor4eck.service.outputstrategy.concrete.MenuProviderOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.SortOutputStrategy;
 import com.arnor4eck.util.OutputStrategyPair;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
+import static java.util.Collections.singletonList;
 
 public class OutputStrategyFactory {
 
@@ -34,6 +34,14 @@ public class OutputStrategyFactory {
             List<OutputStrategyPair<?>> pairs
     ) {
         return new MenuProviderOutputStrategy(topic, scanner, pairs);
+    }
+
+    public static MenuProviderOutputStrategy menuProvider(
+            String topic,
+            Scanner scanner,
+            OutputStrategyPair<?> pair
+    ) {
+        return new MenuProviderOutputStrategy(topic, scanner, singletonList(pair));
     }
 
     public static <T> SortOutputStrategy<T> sort(

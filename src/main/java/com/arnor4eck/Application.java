@@ -77,24 +77,20 @@ public final class Application {
                 OutputStrategyFactory.menuProvider(
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         scanner,
-                        List.of(
-                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(
-                                    List.of(
-                                            XlsxOutputStrategy.XlsxPair.of("Места", plotRepository),
-                                            XlsxOutputStrategy.XlsxPair.of("Запросы", requestRepository),
-                                            XlsxOutputStrategy.XlsxPair.of("Клиенты", customerRepository),
-                                            XlsxOutputStrategy.XlsxPair.of("Сектора", sectorRepository),
-                                            XlsxOutputStrategy.XlsxPair.of("Сотрудники", employeeRepository)
-                                    )
-                            ))
-                        )
+                        OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(
+                                List.of(
+                                        XlsxOutputStrategy.XlsxPair.of("Места", plotRepository),
+                                        XlsxOutputStrategy.XlsxPair.of("Запросы", requestRepository),
+                                        XlsxOutputStrategy.XlsxPair.of("Клиенты", customerRepository),
+                                        XlsxOutputStrategy.XlsxPair.of("Сектора", sectorRepository),
+                                        XlsxOutputStrategy.XlsxPair.of("Сотрудники", employeeRepository)
+                                )
+                        ))
                 ),
                 OutputStrategyFactory.menuProvider(
                         "========= СТАТИСТИКА =========",
                         scanner,
-                        List.of(
-                            OutputStrategyPair.of("Общая статистика", new StatisticsOutputStrategy(plotRepository, requestRepository))
-                        )
+                        OutputStrategyPair.of("Общая статистика", new StatisticsOutputStrategy(plotRepository, requestRepository))
                 )
             )
         );
