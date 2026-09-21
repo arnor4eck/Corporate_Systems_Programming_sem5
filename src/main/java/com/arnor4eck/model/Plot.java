@@ -1,6 +1,7 @@
 package com.arnor4eck.model;
 
 import com.arnor4eck.util.enums.PlotStatus;
+import org.jetbrains.annotations.Nullable;
 
 public record Plot(
         int id,
@@ -10,6 +11,6 @@ public record Plot(
         PlotStatus status,
         float lengthCm,
         float widthCm ,
-        String coordinates
+        @Nullable String coordinates
 ) {
 }

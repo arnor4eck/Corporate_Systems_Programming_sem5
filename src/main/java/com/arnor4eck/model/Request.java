@@ -1,6 +1,7 @@
 package com.arnor4eck.model;
 
 import com.arnor4eck.util.enums.RequestStatus;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,13 +11,13 @@ public record Request(
         int costumerId,
         int employeeId,
         int plotId,
-        String deceasedFullName,
-        LocalDate deceasedBirthday,
-        LocalDate deceasedDeathday,
-        String deceasedCertificate,
+        @Nullable String deceasedFullName,
+        @Nullable LocalDate deceasedBirthday,
+        @Nullable LocalDate deceasedDeathday,
+        @Nullable String deceasedCertificate,
         RequestStatus status,
         String totalCost,
-        String note,
+        @Nullable String note,
         LocalDateTime createdAt
 ) {
 
