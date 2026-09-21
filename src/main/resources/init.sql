@@ -22,7 +22,13 @@ CREATE TABLE IF NOT EXISTS customers (
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO customers(full_name, phone) VALUES ('Владислав Поздняков', '1231233245');
+INSERT INTO customers(full_name, phone) VALUES ('Поздняков Владислав Оуджибудов', '+71111111111');
+INSERT INTO customers(full_name, phone) VALUES ('Халяпин Алексей Оуджибудов', '+72222222222');
+INSERT INTO customers(full_name, phone) VALUES ('Степан Степанов Оуджибудов', '+733333333333');
+INSERT INTO customers(full_name, phone) VALUES ('Костик Админ Оуджибудов', '+74444444444');
+INSERT INTO customers(full_name, phone) VALUES ('Воло Ботанов Оуджибудов', '+75555555555');
+INSERT INTO customers(full_name, phone) VALUES ('Владислав Кураков Оуджибудов', '+76666666666');
+INSERT INTO customers(full_name, phone) VALUES ('Никита Киков Оуджибудов', '+77777777777');
 
 -- 3. Таблица: Сектора кладбища
 CREATE TABLE IF NOT EXISTS sectors (
@@ -31,7 +37,12 @@ CREATE TABLE IF NOT EXISTS sectors (
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO sectors (name) VALUES ('1');
+INSERT INTO sectors (name) VALUES ('Весенний');
+INSERT INTO sectors (name) VALUES ('Летний');
+INSERT INTO sectors (name) VALUES ('Зимний');
+INSERT INTO sectors (name) VALUES ('Осеннний');
+INSERT INTO sectors (name) VALUES ('Арзамас');
+INSERT INTO sectors (name) VALUES ('Бердск');
 
 -- 4. Таблица: Места захоронения
 CREATE TABLE IF NOT EXISTS plots (
@@ -47,8 +58,11 @@ CREATE TABLE IF NOT EXISTS plots (
 );
 
 INSERT INTO plots(sector_id, row_number, plot_number, coordinates, status) VALUES (1, 2, 1, '55.7558, 37.6173', 'RESERVED');
-INSERT INTO plots(sector_id, row_number, plot_number, coordinates) VALUES (1, 1, 1, '55.7558, 37.6173');
-INSERT INTO plots(sector_id, row_number, plot_number, coordinates, status) VALUES (1, 3, 1, '55.7558, 37.6173', 'RESERVED');
+INSERT INTO plots(sector_id, row_number, plot_number, coordinates, status) VALUES (2, 1, 1, '28.124, 12.213', 'OCCUPIED');
+INSERT INTO plots(sector_id, row_number, plot_number, coordinates, status) VALUES (1, 1, 1, '69.6767, 67.6969', 'FREE');
+INSERT INTO plots(sector_id, row_number, plot_number, coordinates, status) VALUES (3, 2, 1, '1.0, 2.0', 'FREE');
+INSERT INTO plots(sector_id, row_number, plot_number, coordinates) VALUES (4, 1, 1, '12.12, 33.222');
+INSERT INTO plots(sector_id, row_number, plot_number, coordinates, status) VALUES (5, 1, 1, '99.41234, 66.125', 'OCCUPIED');
 
 -- 5. Таблица: Сотрудники
 CREATE TABLE IF NOT EXISTS employees (
@@ -61,7 +75,12 @@ CREATE TABLE IF NOT EXISTS employees (
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO employees(full_name, login, password_hash) VALUES ('Гой Гоевич', 'mail@mail.mail', 'password');
+INSERT INTO employees(full_name, login, password_hash) VALUES ('Гой Гоевич Гоев', 'goy@mail.mail', 'password');
+INSERT INTO employees(full_name, login, password_hash) VALUES ('Наш Слон Слонович', 'elephant@mail.mail', 'password');
+INSERT INTO employees(full_name, login, password_hash) VALUES ('Полка Полка Полка', 'polka@mail.mail', 'password');
+INSERT INTO employees(full_name, login, password_hash) VALUES ('Стул Стул Стулевич', 'chair@mail.mail', 'password');
+INSERT INTO employees(full_name, login, password_hash) VALUES ('Телефон Телефонов Телефонович', 'phone@mail.mail', 'password');
+INSERT INTO employees(full_name, login, password_hash) VALUES ('Кактотам Будейко Какойтотам', 'budeiko@mail.mail', 'password');
 
 -- 6. Таблица: Заявки (содержит данные об умершем)
 CREATE TABLE IF NOT EXISTS requests (
@@ -87,8 +106,11 @@ CREATE TABLE IF NOT EXISTS requests (
                                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (1, 1, 1, '2020-06-22 19:10:25-07');
-INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (1, 1, 1, '2022-06-22 19:10:25-07');
+INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (1, 1, 2, '2020-02-12 12:12:07-07');
+INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (3, 2, 1, '2022-06-02 07:55:32-07');
+INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (2, 3, 3, '2023-05-04 03:13:44-07');
+INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (5, 4, 4, '2021-12-17 02:44:23-07');
+INSERT INTO requests(customer_id, plot_id, employee_id, processed_date) VALUES (4, 5, 5, '2025-04-26 09:21:56-07');
 
 -- 7. Индексы для ускорения работы приложения
 -- Поиск свободных мест будет очень частым

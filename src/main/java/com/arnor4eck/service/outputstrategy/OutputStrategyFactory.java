@@ -7,33 +7,42 @@ import com.arnor4eck.service.outputstrategy.concrete.MenuProviderOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.SortOutputStrategy;
 import com.arnor4eck.util.OutputStrategyPair;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
+import static java.util.Collections.singletonList;
 
 public class OutputStrategyFactory {
 
-    private OutputStrategyFactory() {
-        throw new UnsupportedOperationException("Not supported");
+    private final Scanner scanner;
+
+    public OutputStrategyFactory(Scanner scanner) {
+        this.scanner = scanner;
     }
 
-    public static <T> AllValuesOutputStrategy<T> allValues(Repository<T> repository) {
+    public static <T> AllValuesOutputStrategy<T> allValues(
+            Repository<T> repository
+    ) {
         return new AllValuesOutputStrategy<>(repository);
     }
 
-    public static <T> ConcreteValueOutputStrategy<T> concreteValue(
-            Repository<T> repository,
-            Scanner scanner
+    public <T> ConcreteValueOutputStrategy<T> concreteValue(
+            Repository<T> repository
     ) {
-        return new ConcreteValueOutputStrategy<>(repository, scanner);
+        return new ConcreteValueOutputStrategy<>(repository, this.scanner);
     }
 
-    public static MenuProviderOutputStrategy menuProvider(
+    public MenuProviderOutputStrategy menuProvider(
             String topic,
-            Scanner scanner,
             List<OutputStrategyPair<?>> pairs
     ) {
-        return new MenuProviderOutputStrategy(topic, scanner, pairs);
+        return new MenuProviderOutputStrategy(topic, this.scanner, pairs);
+    }
+
+    public MenuProviderOutputStrategy menuProvider(
+            String topic,
+            OutputStrategyPair<?> pair
+    ) {
+        return new MenuProviderOutputStrategy(topic, this.scanner, singletonList(pair));
     }
 
     public static <T> SortOutputStrategy<T> sort(
