@@ -7,5 +7,11 @@ public record Sector(
         String name,
         LocalDateTime createdAt
 ) {
-
+    public String toExportString() {
+        return String.join("; ",
+                String.valueOf(id),
+                name,
+                createdAt.toString()
+        );
+    }
 }

@@ -2,10 +2,7 @@ package com.arnor4eck;
 
 import com.arnor4eck.model.Plot;
 import com.arnor4eck.model.Request;
-import com.arnor4eck.repository.CustomerRepository;
-import com.arnor4eck.repository.DataBase;
-import com.arnor4eck.repository.PlotRepository;
-import com.arnor4eck.repository.RequestRepository;
+import com.arnor4eck.repository.*;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
@@ -42,6 +39,7 @@ public final class Application {
         var requestRepository = new RequestRepository(dataSource);
         var plotRepository = new PlotRepository(dataSource);
         var customerRepository = new CustomerRepository(dataSource);
+        var sectorRepository = new SectorRepository(dataSource);
 
         this.mainMenu = new DataExportStrategy(
             List.of(
@@ -80,7 +78,7 @@ public final class Application {
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         scanner,
                         List.of(
-                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(plotRepository, requestRepository, customerRepository))
+                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(plotRepository, requestRepository, customerRepository, sectorRepository))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(
