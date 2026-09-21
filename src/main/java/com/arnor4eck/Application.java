@@ -34,6 +34,9 @@ public final class Application {
                 scanner,
                 MENU_UNITS
         );
+
+        OutputStrategyFactory factory = new OutputStrategyFactory(scanner);
+
         var dataSource = new DataBase();
         var requestRepository = new RequestRepository(dataSource);
         var plotRepository = new PlotRepository(dataSource);
@@ -43,40 +46,36 @@ public final class Application {
 
         this.mainMenu = new DataExportStrategy(
             List.of(
-                OutputStrategyFactory.menuProvider(
+                factory.menuProvider(
                         "========= ЗАЯВИТЕЛИ =========",
-                        scanner,
                         List.of(
                             OutputStrategyPair.of("Все заявители", OutputStrategyFactory.allValues(customerRepository)),
-                            OutputStrategyPair.of("Конкретный заявитель (id)", OutputStrategyFactory.concreteValue(customerRepository, scanner)),
+                            OutputStrategyPair.of("Конкретный заявитель (id)", factory.concreteValue(customerRepository)),
                             OutputStrategyPair.of("Поиск по содержанию текста в ФИО", new CustomerByFullNameFilterStrategy(customerRepository, scanner)),
                             OutputStrategyPair.of("Поиск по номеру телефона", new CustomerByPhoneFilterStrategy(customerRepository, scanner)),
                             OutputStrategyPair.of("Создать заявителя", new CreateCustomerOutputStrategy(customerRepository, scanner))
                         )
                 ),
-                OutputStrategyFactory.menuProvider(
+                factory.menuProvider(
                         "========= ЗАЯВКИ =========",
-                        scanner,
                         List.of(
                             OutputStrategyPair.of("Все заявки", OutputStrategyFactory.allValues(requestRepository)),
-                            OutputStrategyPair.of("Конкретная заявка (id)", OutputStrategyFactory.concreteValue(requestRepository, scanner)),
+                            OutputStrategyPair.of("Конкретная заявка (id)", factory.concreteValue(requestRepository)),
                             OutputStrategyPair.of("Сортировка по дате создания", OutputStrategyFactory.sort(requestRepository, Comparator.comparing(Request::createdAt).reversed()))
                         )
                 ),
-                OutputStrategyFactory.menuProvider(
+                factory.menuProvider(
                         "========= МЕСТА НА КЛАДБИЩЕ =========",
-                        scanner,
                         List.of(
                             OutputStrategyPair.of("Все места", OutputStrategyFactory.allValues(plotRepository)),
-                            OutputStrategyPair.of("Конкретное место (id)", OutputStrategyFactory.concreteValue(plotRepository, scanner)),
+                            OutputStrategyPair.of("Конкретное место (id)", factory.concreteValue(plotRepository)),
                             OutputStrategyPair.of("Сортировка по статусу", OutputStrategyFactory.sort(plotRepository, Comparator.comparing(Plot::status))),
                             OutputStrategyPair.of("Фильтрация по статусу", new PlotByStatusFilterStrategy(plotRepository, scanner)),
                             OutputStrategyPair.of("Создать место", new CreatePlotOutputStrategy(plotRepository, scanner))
                         )
                 ),
-                OutputStrategyFactory.menuProvider(
+                factory.menuProvider(
                         "========= ЭКСПОРТ ДАННЫХ =========",
-                        scanner,
                         OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(
                                 List.of(
                                         XlsxOutputStrategy.XlsxPair.of("Места", plotRepository),
@@ -87,9 +86,8 @@ public final class Application {
                                 )
                         ))
                 ),
-                OutputStrategyFactory.menuProvider(
+                factory.menuProvider(
                         "========= СТАТИСТИКА =========",
-                        scanner,
                         OutputStrategyPair.of("Общая статистика", new StatisticsOutputStrategy(plotRepository, requestRepository))
                 )
             )
