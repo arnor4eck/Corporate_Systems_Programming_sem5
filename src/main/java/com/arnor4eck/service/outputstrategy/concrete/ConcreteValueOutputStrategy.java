@@ -23,6 +23,7 @@ public class ConcreteValueOutputStrategy<T> implements OutputStrategy {
     @Override
     public String act() {
         try {
+            System.out.print("Введите id: ");
             int id = scanner.nextInt();
             Optional<T> val = repository.get(id);
 

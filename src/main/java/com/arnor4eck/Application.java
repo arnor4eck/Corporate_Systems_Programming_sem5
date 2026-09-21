@@ -2,19 +2,15 @@ package com.arnor4eck;
 
 import com.arnor4eck.model.Plot;
 import com.arnor4eck.model.Request;
-import com.arnor4eck.repository.CustomerRepository;
-import com.arnor4eck.repository.DataBase;
-import com.arnor4eck.repository.PlotRepository;
-import com.arnor4eck.repository.RequestRepository;
+import com.arnor4eck.repository.*;
 import com.arnor4eck.service.outputstrategy.DataExportStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreateCustomerOutputStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.create.CreateEmployeeOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreatePlotOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.NotExistingStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByFullNameFilterStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByPhoneFilterStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.filter.PlotByStatusFilterStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.filter.*;
 import com.arnor4eck.util.OutputStrategyPair;
 
 import java.util.Comparator;
@@ -27,7 +23,7 @@ public final class Application {
     private final DataExportStrategy mainMenu;
 
     private static final String EXIT = "Выход";
-    private static final List<String> MENU_UNITS = List.of("Заявители", "Заявки", "Места на кладбище", "Экспорт данных", EXIT);
+    private static final List<String> MENU_UNITS = List.of("Заявители", "Заявки", "Места на кладбище",  "Сотрудники", "Экспорт данных", EXIT);
     private static final int EXIT_CONDITION;
 
     static {
@@ -44,6 +40,7 @@ public final class Application {
         var requestRepository = new RequestRepository(dataSource);
         var plotRepository = new PlotRepository(dataSource);
         var customerRepository = new CustomerRepository(dataSource);
+        var employeeRepository = new EmployeeRepository(dataSource);
 
         this.mainMenu = new DataExportStrategy(
             List.of(
@@ -76,6 +73,17 @@ public final class Application {
                             OutputStrategyPair.of("Сортировка по статусу", OutputStrategyFactory.sort(plotRepository, Comparator.comparing(Plot::status))),
                             OutputStrategyPair.of("Фильтрация по статусу", new PlotByStatusFilterStrategy(plotRepository, scanner)),
                             OutputStrategyPair.of("Создать место", new CreatePlotOutputStrategy(plotRepository, scanner))
+                        )
+                ),
+                OutputStrategyFactory.menuProvider(
+                        "========= СОТРУДНИКИ =========",
+                        scanner,
+                        List.of(
+                            OutputStrategyPair.of("Все сотрудники", OutputStrategyFactory.allValues(employeeRepository)),
+                            OutputStrategyPair.of("Конретный сотрудник (id)", OutputStrategyFactory.concreteValue(employeeRepository, scanner)),
+                            OutputStrategyPair.of("Поиск по содержанию текста в ФИО", new EmployeeByFullNameFilterStrategy(employeeRepository, scanner)),
+                            OutputStrategyPair.of("Поиск по логину", new EmployeeByLoginFilterStrategy(employeeRepository, scanner)),
+                            OutputStrategyPair.of("Создать сотрудника", new CreateEmployeeOutputStrategy(employeeRepository, scanner))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(
