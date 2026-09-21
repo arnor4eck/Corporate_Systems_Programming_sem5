@@ -12,8 +12,8 @@ public record Employee (
         String passwordHash,
         boolean isActive,
         LocalDateTime createdAt
-)
-{
+) implements ExportModel {
+    @Override
     public String toExportString() {
         return String.join("; ",
                 String.valueOf(this.id()),

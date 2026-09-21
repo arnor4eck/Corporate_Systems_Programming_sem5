@@ -3,6 +3,7 @@ package com.arnor4eck.model;
 import com.arnor4eck.util.enums.RequestStatus;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -19,8 +20,8 @@ public record Request(
         String totalCost,
         @Nullable String note,
         LocalDateTime createdAt
-) {
-
+) implements ExportModel {
+    @Override
     public String toExportString() {
         return String.join("; ",
                 String.valueOf(this.id()),
@@ -36,9 +37,5 @@ public record Request(
                 emptyIfNull(this.note()),
                 this.createdAt().toString()
         );
-    }
-
-    private String emptyIfNull(Object string) {
-        return string == null ? "" : string.toString();
     }
 }

@@ -10,7 +10,8 @@ public record Customer(
         String phone,
         @Nullable String email,
         LocalDateTime createdAt
-) {
+) implements ExportModel {
+    @Override
     public String toExportString() {
         return String.join("; ",
                 String.valueOf(id),
@@ -19,9 +20,5 @@ public record Customer(
                 emptyIfNull(email),
                 createdAt.toString()
         );
-    }
-
-    private String emptyIfNull(Object string) {
-        return string == null ? "" : string.toString();
     }
 }

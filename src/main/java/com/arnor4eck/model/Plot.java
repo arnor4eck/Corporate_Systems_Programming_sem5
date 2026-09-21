@@ -12,7 +12,8 @@ public record Plot(
         float lengthCm,
         float widthCm ,
         @Nullable String coordinates
-) {
+) implements ExportModel {
+    @Override
     public String toExportString() {
         return String.join("; ",
                 String.valueOf(id),
@@ -24,9 +25,5 @@ public record Plot(
                 String.valueOf(widthCm),
                 emptyIfNull(coordinates)
         );
-    }
-
-    private String emptyIfNull(Object string) {
-        return string == null ? "" : string.toString();
     }
 }
