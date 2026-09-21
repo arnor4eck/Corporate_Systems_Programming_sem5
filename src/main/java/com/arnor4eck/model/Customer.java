@@ -11,4 +11,17 @@ public record Customer(
         @Nullable String email,
         LocalDateTime createdAt
 ) {
+    public String toExportString() {
+        return String.join("; ",
+                String.valueOf(id),
+                fullName,
+                phone,
+                emptyIfNull(email),
+                createdAt.toString()
+        );
+    }
+
+    private String emptyIfNull(Object string) {
+        return string == null ? "" : string.toString();
+    }
 }

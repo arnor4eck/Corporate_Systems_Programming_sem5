@@ -1,5 +1,6 @@
 package com.arnor4eck.service.outputstrategy.concrete.xlsx;
 
+import com.arnor4eck.model.Customer;
 import com.arnor4eck.model.Plot;
 import com.arnor4eck.model.Request;
 import com.arnor4eck.repository.Repository;
@@ -12,13 +13,16 @@ public class XlsxOutputStrategy implements OutputStrategy {
 
     private final Repository<Plot> plotRepository;
     private final Repository<Request> requestRepository;
+    private final Repository<Customer> customerRepository;
 
     public XlsxOutputStrategy(
             Repository<Plot> plotRepository,
-            Repository<Request> requestRepository
+            Repository<Request> requestRepository,
+            Repository<Customer> customerRepository
     ) {
         this.plotRepository = plotRepository;
         this.requestRepository = requestRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -41,6 +45,9 @@ public class XlsxOutputStrategy implements OutputStrategy {
             pojo.addSheet("Заявки",
                     requestRepository,
                     Request::toExportString);
+            pojo.addSheet("Клиенты",
+                    customerRepository,
+                    Customer::toExportString);
 
 
             Workbook workbook = pojo.getWorkbook();
