@@ -35,16 +35,9 @@ public class XlsxOutputStrategy implements OutputStrategy {
 
         try (FileOutputStream fos = new FileOutputStream(fileName)) {
             XlsxPojo pojo = new XlsxPojo();
-            pojo.addSheet("Места", plotRepository, plot -> String.join("; ",
-                    String.valueOf(plot.id()),
-                    String.valueOf(plot.sectorId()),
-                    String.valueOf(plot.rowNumber()),
-                    String.valueOf(plot.plotNumber()),
-                    plot.status().getValue(),
-                    String.valueOf(plot.lengthCm()),
-                    String.valueOf(plot.widthCm()),
-                    plot.coordinates()
-            ));
+            pojo.addSheet("Места",
+                    plotRepository,
+                    Plot::toExportString);
 
             pojo.addSheet("Заявки",
                     requestRepository,
