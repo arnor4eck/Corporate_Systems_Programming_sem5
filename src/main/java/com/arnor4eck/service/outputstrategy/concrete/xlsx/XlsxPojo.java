@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -25,7 +26,13 @@ public final class XlsxPojo {
             Repository<T> repository,
             Function<T, String> mapToString
     ) {
-        List<T> all = new ArrayList<>(repository.getAll());
+        List<T> all;
+        try {
+            all = new ArrayList<>(repository.getAll());
+        } catch (SQLException e) {
+            System.out.printf("Не удалось получить все сущности для %s: %s\n%n", sheetName, e.getMessage());
+            return;
+        }
         Sheet sheet = workbook.createSheet(sheetName);
 
         for (int i = 0; i < all.size(); i++) {
