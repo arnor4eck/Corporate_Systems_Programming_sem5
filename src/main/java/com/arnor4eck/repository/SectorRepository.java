@@ -24,9 +24,9 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
     }
 
     @Override
-    public Optional<Sector> get(int id) {
-        String sql = "SELECT id, name, created_at" +
-                " FROM sectors WHERE id = ?";
+    public Optional<Sector> get(int id) throws SQLException {
+        String sql = "SELECT id, name, created_at FROM sectors WHERE id = ?";
+
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
@@ -37,17 +37,12 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
                 return Optional.of(mapRow(rs));
             }
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
     }
 
     @Override
-    public Collection<Sector> getAll() {
-        String sql = "SELECT id, name, created_at " +
-                "FROM sectors";
+    public Collection<Sector> getAll() throws SQLException {
+        String sql = "SELECT id, name, created_at FROM sectors";
+
         List<Sector> list = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -56,16 +51,12 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
                 list.add(mapRow(rs));
             }
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
+
         return list;
     }
 
     @Override
-    public void save(Sector value) {
+    public void save(Sector value) throws SQLException {
         String sql =
                 "INSERT INTO sectors(name, created_at)" +
                         " VALUES(?, ?);";
@@ -76,26 +67,15 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
             stmt.setTimestamp(2, Timestamp.valueOf(value.createdAt()));
             stmt.executeUpdate();
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM sectors WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
-
     }
 }

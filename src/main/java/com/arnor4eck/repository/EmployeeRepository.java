@@ -29,7 +29,7 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
         );
     }
     @Override
-    public Optional<Employee> get(int id) {
+    public Optional<Employee> get(int id) throws SQLException {
         String sql = "SELECT id, full_name, role, login," +
                 " password_hash, is_active, created_at" +
                 " FROM employees WHERE id = ?";
@@ -43,15 +43,10 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
                 return Optional.of(mapRow(rs));
             }
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
     }
 
     @Override
-    public Collection<Employee> getAll() {
+    public Collection<Employee> getAll() throws SQLException {
         String sql = "SELECT id, full_name, role, login," +
                 " password_hash, is_active, created_at" +
                 " FROM employees";
@@ -63,16 +58,11 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
                 list.add(mapRow(rs));
             }
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
         return list;
     }
 
     @Override
-    public void save(Employee value) {
+    public void save(Employee value) throws SQLException {
         String sql = "INSERT INTO employees(full_name, role, login, password_hash, " +
                 "is_active, created_at) VALUES(?, ?, ?, ?, ?, ?);";
 
@@ -86,26 +76,15 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
             stmt.setTimestamp(6, Timestamp.valueOf(value.createdAt()));
             stmt.executeUpdate();
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM employees WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
-
     }
 }
