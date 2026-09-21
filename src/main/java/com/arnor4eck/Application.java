@@ -40,6 +40,7 @@ public final class Application {
         var plotRepository = new PlotRepository(dataSource);
         var customerRepository = new CustomerRepository(dataSource);
         var sectorRepository = new SectorRepository(dataSource);
+        var employeeRepository = new EmployeeRepository(dataSource);
 
         this.mainMenu = new DataExportStrategy(
             List.of(
@@ -78,7 +79,7 @@ public final class Application {
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         scanner,
                         List.of(
-                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(plotRepository, requestRepository, customerRepository, sectorRepository))
+                            OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(plotRepository, requestRepository, customerRepository, sectorRepository, employeeRepository))
                         )
                 ),
                 OutputStrategyFactory.menuProvider(

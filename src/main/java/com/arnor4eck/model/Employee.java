@@ -13,4 +13,16 @@ public record Employee (
         boolean isActive,
         LocalDateTime createdAt
 )
-{}
+{
+    public String toExportString() {
+        return String.join("; ",
+                String.valueOf(this.id()),
+                fullName,
+                role.name(),
+                login,
+                passwordHash,
+                String.valueOf(isActive),
+                createdAt.toString()
+        );
+    }
+}
