@@ -8,10 +8,9 @@ import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.service.outputstrategy.OutputStrategyFactory;
 import com.arnor4eck.service.outputstrategy.concrete.StatisticsOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreateCustomerOutputStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.create.CreateEmployeeOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreatePlotOutputStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByFullNameFilterStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.filter.CustomerByPhoneFilterStrategy;
-import com.arnor4eck.service.outputstrategy.concrete.filter.PlotByStatusFilterStrategy;
+import com.arnor4eck.service.outputstrategy.concrete.filter.*;
 import com.arnor4eck.service.outputstrategy.concrete.xlsx.XlsxOutputStrategy;
 import com.arnor4eck.util.OutputStrategyPair;
 
@@ -25,7 +24,7 @@ public final class Application {
     private final DataExportStrategy mainMenu;
 
     private static final String EXIT = "Выход";
-    private static final List<String> MENU_UNITS = List.of("Заявители", "Заявки", "Места на кладбище", "Экспорт данных", "Статистика", EXIT);
+    private static final List<String> MENU_UNITS = List.of("Заявители", "Заявки", "Места на кладбище", "Сотрудники", "Экспорт данных", "Статистика", EXIT);
     private static final int EXIT_CONDITION = MENU_UNITS.indexOf(EXIT) + 1;
 
     public Application(Scanner scanner) {
@@ -43,6 +42,7 @@ public final class Application {
         var customerRepository = new CustomerRepository(dataSource);
         var sectorRepository = new SectorRepository(dataSource);
         var employeeRepository = new EmployeeRepository(dataSource);
+
 
         this.mainMenu = new DataExportStrategy(
             List.of(
@@ -75,20 +75,28 @@ public final class Application {
                         )
                 ),
                 factory.menuProvider(
+                        "========= СОТРУДНИКИ =========",
+                        List.of(
+                            OutputStrategyPair.of("Все сотрудники", OutputStrategyFactory.allValues(employeeRepository)),
+                            OutputStrategyPair.of("Конретный сотрудник (id)", factory.concreteValue(employeeRepository)), OutputStrategyPair.of("Поиск по содержанию текста в ФИО", new EmployeeByFullNameFilterStrategy(employeeRepository, scanner)),
+                            OutputStrategyPair.of("Поиск по логину", new EmployeeByLoginFilterStrategy(employeeRepository, scanner)),
+                            OutputStrategyPair.of("Создать сотрудника", new CreateEmployeeOutputStrategy(employeeRepository, scanner))
+                            )
+                    ),
+                factory.menuProvider(
                         "========= ЭКСПОРТ ДАННЫХ =========",
                         OutputStrategyPair.of("Общий экспорт", new XlsxOutputStrategy(
-                                List.of(
-                                        XlsxOutputStrategy.XlsxPair.of("Места", plotRepository),
-                                        XlsxOutputStrategy.XlsxPair.of("Запросы", requestRepository),
-                                        XlsxOutputStrategy.XlsxPair.of("Клиенты", customerRepository),
-                                        XlsxOutputStrategy.XlsxPair.of("Сектора", sectorRepository),
-                                        XlsxOutputStrategy.XlsxPair.of("Сотрудники", employeeRepository)
+                            List.of(
+                                XlsxOutputStrategy.XlsxPair.of("Места", plotRepository),
+                                XlsxOutputStrategy.XlsxPair.of("Запросы", requestRepository),
+                                XlsxOutputStrategy.XlsxPair.of("Клиенты", customerRepository),
+                                XlsxOutputStrategy.XlsxPair.of("Сектора", sectorRepository), XlsxOutputStrategy.XlsxPair.of("Сотрудники", employeeRepository)
                                 )
                         ))
                 ),
                 factory.menuProvider(
-                        "========= СТАТИСТИКА =========",
-                        OutputStrategyPair.of("Общая статистика", new StatisticsOutputStrategy(plotRepository, requestRepository))
+                    "========= СТАТИСТИКА =========",
+                    OutputStrategyPair.of("Общая статистика", new StatisticsOutputStrategy(plotRepository, requestRepository))
                 )
             )
         );
