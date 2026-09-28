@@ -8,4 +8,5 @@ public interface Repository<T> {
     Collection<T> getAll();
     void save(T value);
     void delete(int id);
+    void update(T value);
 }

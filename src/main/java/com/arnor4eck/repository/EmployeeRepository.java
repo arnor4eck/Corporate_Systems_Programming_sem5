@@ -92,6 +92,30 @@ public class EmployeeRepository extends AbstractJDBCRepository<Employee> {
             ));
         }
     }
+    @Override
+    public void update(Employee value) {
+        String sql = "UPDATE employees SET full_name = ?, role = ?, login = ?, " +
+                "password_hash = ?, is_active = ?, created_at = ? " +
+                "WHERE id = ?;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, value.fullName());
+            stmt.setObject(2, value.role().toString(), Types.OTHER);
+            stmt.setString(3, value.login());
+            stmt.setString(4, value.passwordHash());
+            stmt.setBoolean(5, value.isActive());
+            stmt.setTimestamp(6, Timestamp.valueOf(value.createdAt()));
+            stmt.setInt(7, value.id());
+            stmt.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(String.format(
+                    "SQL exception: %s", e.getMessage()
+            ));
+        }
+    }
+
 
     @Override
     public void delete(int id) {

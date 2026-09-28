@@ -98,6 +98,32 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
         }
     }
     @Override
+    public void update(Plot value) {
+        String sql =
+                "UPDATE plots SET sector_id = ?, row_number = ?, " +
+                        "plot_number = ?, status = ?, length_cm = ?, " +
+                        "width_cm = ?, coordinates = ? " +
+                        "WHERE id = ?;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1, value.sectorId());
+            stmt.setInt(2, value.rowNumber());
+            stmt.setInt(3, value.plotNumber());
+            stmt.setObject(4, value.status().toString(), Types.OTHER);
+            stmt.setFloat(5, value.lengthCm());
+            stmt.setFloat(6, value.widthCm());
+            stmt.setString(7, value.coordinates());
+            stmt.setInt(8, value.id());
+            stmt.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(String.format(
+                    "SQL exception: %s", e.getMessage()
+            ));
+        }
+    }
+    @Override
     public void delete(int id) {
         String sql = "DELETE FROM plots WHERE id = ?";
         try (Connection conn = getConnection();

@@ -82,7 +82,25 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
             ));
         }
     }
+    @Override
+    public void update(Sector value) {
+        String sql =
+                "UPDATE sectors SET name = ?, created_at = ? " +
+                        "WHERE id = ?;";
 
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, value.name());
+            stmt.setTimestamp(2, Timestamp.valueOf(value.createdAt()));
+            stmt.setInt(3, value.id());
+            stmt.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(String.format(
+                    "SQL exception: %s", e.getMessage()
+            ));
+        }
+    }
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM sectors WHERE id = ?";

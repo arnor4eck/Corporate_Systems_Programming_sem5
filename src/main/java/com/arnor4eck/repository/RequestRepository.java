@@ -2,7 +2,9 @@ package com.arnor4eck.repository;
 
 import com.arnor4eck.model.Request;
 import com.arnor4eck.util.enums.RequestStatus;
+import org.apache.poi.hpsf.Decimal;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -83,27 +85,23 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
     @Override
     public void save(Request value) {
         String sql =
-                "INSERT INTO requests(id, customer_id, employee_id," +
-                " plot_id, deceased_full_name, deceased_birthday " +
-                "deceased_birth_date, deceased_death_date, deceased_certificate, " +
-                "status, total_cost, notes, created_at " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                "INSERT INTO requests(customer_id, employee_id, plot_id, " +
+                        "deceased_full_name, deceased_birth_date, deceased_death_date, " +
+                        "deceased_certificate, status, total_cost, notes, created_at) " +
+                        "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, value.costumerId());
             stmt.setInt(2, value.employeeId());
             stmt.setInt(3, value.plotId());
-
             stmt.setString(4, value.deceasedFullName());
             stmt.setDate(5, Date.valueOf(value.deceasedBirthday()));
             stmt.setDate(6, Date.valueOf(value.deceasedDeathday()));
-
             stmt.setString(7, value.deceasedCertificate());
-            stmt.setString(8, value.status().toString());
-            stmt.setString(9, value.totalCost());
+            stmt.setObject(8, value.status().toString(), Types.OTHER);
+            stmt.setBigDecimal(9, new BigDecimal(value.totalCost()));
             stmt.setString(10, value.note());
-
             stmt.setTimestamp(11, Timestamp.valueOf(value.createdAt()));
             stmt.executeUpdate();
         }
@@ -111,6 +109,37 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
             throw new RuntimeException(String.format(
                     "SQL exception: %s", e.getMessage()
             ));
+        }
+    }
+    public void update(Request value) {
+        String sql = """
+        UPDATE requests SET 
+            customer_id = ?, employee_id = ?, plot_id = ?, 
+            deceased_full_name = ?, deceased_birth_date = ?, 
+            deceased_death_date = ?, deceased_certificate = ?, 
+            status = ?, total_cost = ?, notes = ?
+        WHERE id = ?;
+        """;
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, value.costumerId());
+            stmt.setInt(2, value.employeeId());
+            stmt.setInt(3, value.plotId());
+            stmt.setString(4, value.deceasedFullName());
+            stmt.setDate(5, Date.valueOf(value.deceasedBirthday()));
+            stmt.setDate(6, Date.valueOf(value.deceasedDeathday()));
+            stmt.setString(7, value.deceasedCertificate());
+            stmt.setObject(8, value.status().toString(), Types.OTHER);
+            stmt.setBigDecimal(9, new BigDecimal(value.totalCost()));
+            stmt.setString(10, value.note());
+
+            stmt.setInt(11, value.id());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("SQL exception during update: " + e.getMessage(), e);
         }
     }
     @Override
