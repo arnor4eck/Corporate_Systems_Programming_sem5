@@ -111,7 +111,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
         }
     }
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM plots WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
