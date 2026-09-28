@@ -88,6 +88,27 @@ public class CustomerRepository extends AbstractJDBCRepository<Customer> {
         }
     }
     @Override
+    public void update(Customer value) {
+        String sql =
+                "UPDATE customers SET full_name = ?, phone = ?, email = ?, created_at = ? " +
+                        "WHERE id = ?;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, value.fullName());
+            stmt.setString(2, value.phone());
+            stmt.setString(3, value.email());
+            stmt.setTimestamp(4, Timestamp.valueOf(value.createdAt()));
+            stmt.setInt(5, value.id());
+            stmt.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(String.format(
+                    "SQL exception: %s", e.getMessage()
+            ));
+        }
+    }
+    @Override
     public void delete(int id) {
         String sql = "DELETE FROM customers WHERE id = ?";
         try (Connection conn = getConnection();
