@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Scanner;
@@ -32,7 +33,7 @@ public class ConcreteValueOutputStrategyTest {
 
     @Test
     @DisplayName("При вводе конкретного id, должна возращаться сущность, преобразованная в строку")
-    public void testFindById() {
+    public void testFindById() throws SQLException {
         int expectedId = 1;
         Employee employee = new Employee(expectedId, "name", Role.ADMIN, "password", "password", true, LocalDateTime.now());
 

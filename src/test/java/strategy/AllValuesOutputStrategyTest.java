@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +31,7 @@ public class AllValuesOutputStrategyTest {
 
     @Test
     @DisplayName("При вызове метода act() должна возвращаться строка, содержащая все записи, разделённые переносом строки")
-    public void testAllValuesOutputStrategy() {
+    public void testAllValuesOutputStrategy() throws SQLException {
         Collection<Employee> employees = List.of(
                 createEmployee(1), createEmployee(2), createEmployee(3)
         );
