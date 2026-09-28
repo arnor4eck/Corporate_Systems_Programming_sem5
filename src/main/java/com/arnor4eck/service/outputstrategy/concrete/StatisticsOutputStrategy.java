@@ -7,6 +7,7 @@ import com.arnor4eck.service.outputstrategy.OutputStrategy;
 import com.arnor4eck.util.enums.PlotStatus;
 import com.arnor4eck.util.enums.RequestStatus;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +37,12 @@ public class StatisticsOutputStrategy implements OutputStrategy {
     }
 
     private String getPlotStatistics() {
-        Collection<Plot> all = plotRepository.getAll();
+        Collection<Plot> all;
+        try {
+            all = plotRepository.getAll();
+        } catch (SQLException e) {
+            return "Не удалось получить все сущности: %s\n".formatted(e.getMessage());
+        }
 
         String[] array = Arrays.stream(PlotStatus.values())
                 .map(status -> filter(all, status.getValue(), plot -> plot.status().equals(status)))
@@ -53,7 +59,12 @@ public class StatisticsOutputStrategy implements OutputStrategy {
     }
 
     private String getRequestStatistics() {
-        Collection<Request> all = requestRepository.getAll();
+        Collection<Request> all;
+        try {
+            all = requestRepository.getAll();
+        } catch (SQLException e) {
+            return "Не удалось получить все сущности: %s\n".formatted(e.getMessage());
+        }
 
         String[] array = Arrays.stream(RequestStatus.values())
                 .map(status -> filter(all, status.getValue(), val -> val.status().equals(status)))

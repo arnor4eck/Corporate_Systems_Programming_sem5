@@ -1,5 +1,6 @@
 package com.arnor4eck.repository;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 

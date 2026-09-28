@@ -25,7 +25,7 @@ public class CustomerRepository extends AbstractJDBCRepository<Customer> {
         );
     }
     @Override
-    public Optional<Customer> get(int id) {
+    public Optional<Customer> get(int id) throws SQLException {
         String sql = "SELECT id, full_name, phone," +
                 " email, created_at" +
                 " FROM customers WHERE id = ?";
@@ -39,15 +39,10 @@ public class CustomerRepository extends AbstractJDBCRepository<Customer> {
                 return Optional.of(mapRow(rs));
             }
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
     }
 
     @Override
-    public Collection<Customer> getAll() {
+    public Collection<Customer> getAll() throws SQLException {
         String sql = "SELECT id, full_name, phone," +
                 "email, created_at " +
                 "FROM customers";
@@ -59,16 +54,12 @@ public class CustomerRepository extends AbstractJDBCRepository<Customer> {
                 list.add(mapRow(rs));
             }
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
+
         return list;
     }
 
     @Override
-    public void save(Customer value) {
+    public void save(Customer value) throws SQLException {
         String sql =
                 "INSERT INTO customers(full_name, phone, email, created_at)" +
                         " VALUES(?, ?, ?, ?);";
@@ -80,11 +71,6 @@ public class CustomerRepository extends AbstractJDBCRepository<Customer> {
             stmt.setString(3, value.email());
             stmt.setTimestamp(4, Timestamp.valueOf(value.createdAt()));
             stmt.executeUpdate();
-        }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
         }
     }
     @Override
@@ -115,11 +101,6 @@ public class CustomerRepository extends AbstractJDBCRepository<Customer> {
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
             stmt.executeUpdate();
-        }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
         }
 
     }

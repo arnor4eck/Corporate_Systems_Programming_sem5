@@ -28,11 +28,12 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
         );
     }
     @Override
-    public Optional<Plot> get(int id) {
+    public Optional<Plot> get(int id) throws SQLException {
         String sql = "SELECT id, sector_id, row_number," +
                 " plot_number, status, length_cm, " +
                 "width_cm, coordinates" +
                 " FROM plots WHERE id = ?";
+
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
@@ -43,15 +44,10 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
                 return Optional.of(mapRow(rs));
             }
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
     }
 
     @Override
-    public Collection<Plot> getAll() {
+    public Collection<Plot> getAll() throws SQLException {
         String sql = "SELECT id, sector_id, row_number," +
                 " plot_number,  status, length_cm, " +
                 "width_cm, coordinates " +
@@ -64,16 +60,12 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
                 list.add(mapRow(rs));
             }
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
+
         return list;
     }
 
     @Override
-    public void save(Plot value) {
+    public void save(Plot value) throws SQLException {
         String sql =
                 "INSERT INTO plots(sector_id, row_number, " +
                         "plot_number, status, length_cm, " +
@@ -90,11 +82,6 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
             stmt.setFloat(6, value.widthCm());
             stmt.setString(7, value.coordinates());
             stmt.executeUpdate();
-        }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
         }
     }
     @Override
@@ -131,13 +118,5 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
-
     }
-
-
 }
