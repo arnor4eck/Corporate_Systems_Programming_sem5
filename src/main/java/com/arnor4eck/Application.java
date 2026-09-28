@@ -11,6 +11,7 @@ import com.arnor4eck.service.outputstrategy.concrete.create.CreateCustomerOutput
 import com.arnor4eck.service.outputstrategy.concrete.create.CreateEmployeeOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.create.CreatePlotOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.filter.*;
+import com.arnor4eck.service.outputstrategy.concrete.update.UpdatePlotOutputStrategy;
 import com.arnor4eck.service.outputstrategy.concrete.xlsx.XlsxOutputStrategy;
 import com.arnor4eck.util.OutputStrategyPair;
 
@@ -71,7 +72,8 @@ public final class Application {
                             OutputStrategyPair.of("Конкретное место (id)", factory.concreteValue(plotRepository)),
                             OutputStrategyPair.of("Сортировка по статусу", OutputStrategyFactory.sort(plotRepository, Comparator.comparing(Plot::status))),
                             OutputStrategyPair.of("Фильтрация по статусу", new PlotByStatusFilterStrategy(plotRepository, scanner)),
-                            OutputStrategyPair.of("Создать место", new CreatePlotOutputStrategy(plotRepository, scanner))
+                            OutputStrategyPair.of("Создать место", new CreatePlotOutputStrategy(plotRepository, scanner)),
+                            OutputStrategyPair.of("Обновить существующее место", new UpdatePlotOutputStrategy(plotRepository, scanner))
                         )
                 ),
                 factory.menuProvider(
