@@ -7,3 +7,4 @@ docker compose up
 gradlew clean shadowJar
 java -jar build/libs/Corporate_Systems_Programming_sem5.jar
 ```
+![Gemini_Generated_Image_d7ytemd7ytemd7yt.jpg](../../../../Downloads/Gemini_Generated_Image_d7ytemd7ytemd7yt.jpg)
