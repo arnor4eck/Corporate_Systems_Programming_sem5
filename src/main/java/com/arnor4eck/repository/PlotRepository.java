@@ -85,7 +85,7 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
         }
     }
     @Override
-    public void update(Plot value) {
+    public void update(Plot value) throws SQLException {
         String sql =
                 "UPDATE plots SET sector_id = ?, row_number = ?, " +
                         "plot_number = ?, status = ?, length_cm = ?, " +
@@ -103,11 +103,6 @@ public class PlotRepository extends AbstractJDBCRepository<Plot> {
             stmt.setString(7, value.coordinates());
             stmt.setInt(8, value.id());
             stmt.executeUpdate();
-        }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
         }
     }
     @Override
