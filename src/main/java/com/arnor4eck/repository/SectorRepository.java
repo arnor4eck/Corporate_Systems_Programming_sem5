@@ -68,8 +68,9 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
             stmt.executeUpdate();
         }
     }
+
     @Override
-    public void update(Sector value) {
+    public void update(Sector value) throws SQLException {
         String sql =
                 "UPDATE sectors SET name = ?, created_at = ? " +
                         "WHERE id = ?;";
@@ -81,12 +82,8 @@ public class SectorRepository extends AbstractJDBCRepository<Sector> {
             stmt.setInt(3, value.id());
             stmt.executeUpdate();
         }
-        catch (SQLException e){
-            throw new RuntimeException(String.format(
-                    "SQL exception: %s", e.getMessage()
-            ));
-        }
     }
+
     @Override
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM sectors WHERE id = ?";

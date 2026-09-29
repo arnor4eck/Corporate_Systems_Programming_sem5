@@ -98,7 +98,7 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
             stmt.executeUpdate();
         }
     }
-    public void update(Request value) {
+    public void update(Request value) throws SQLException {
         String sql = """
         UPDATE requests SET 
             customer_id = ?, employee_id = ?, plot_id = ?, 
@@ -125,8 +125,6 @@ public class RequestRepository extends AbstractJDBCRepository<Request> {
             stmt.setInt(11, value.id());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("SQL exception during update: " + e.getMessage(), e);
         }
     }
     @Override
